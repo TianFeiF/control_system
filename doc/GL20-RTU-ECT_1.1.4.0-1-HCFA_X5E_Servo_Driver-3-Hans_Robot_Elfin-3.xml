@@ -1,0 +1,1962 @@
+<?xml version="1.0" ?>
+<EtherCATInfoList>
+  <EtherCATInfo>
+    <!-- Slave 0 -->
+    <Vendor>
+      <Id>1048576</Id>
+    </Vendor>
+    <Descriptions>
+      <Devices>
+        <Device>
+          <Type ProductCode="#x10f41000" RevisionNo="#x01006000">GL20-RTU-ECT</Type>
+          <Name><![CDATA[GL20-RTU-ECT_1.1.4.0]]></Name>
+          <Sm Enable="1" StartAddress="#x1000" ControlByte="#x26" DefaultSize="128" />
+          <Sm Enable="1" StartAddress="#x1400" ControlByte="#x22" DefaultSize="128" />
+          <Sm Enable="1" StartAddress="#x1800" ControlByte="#x64" DefaultSize="0" />
+          <Sm Enable="1" StartAddress="#x1c00" ControlByte="#x60" DefaultSize="0" />
+           <RxPdo Fixed="true" Sm="2">
+			<Index>#x17a0</Index>
+			<Name>Device RPDO Mapping parameter</Name>
+			<Entry>
+			<Index>#xfb00</Index>
+			<SubIndex>0</SubIndex>
+			<BitLen>16</BitLen>
+			<Name>Device control</Name>
+			<DataType>UINT16</DataType>
+			</Entry>
+		</RxPdo>
+        <RxPdo Sm="2" Fixed="1" Mandatory="1">
+          <Index>#x1609</Index>
+          <Name></Name>
+            <Entry>
+              <Index>#x7041</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x7041</Index>
+              <SubIndex>2</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+        </RxPdo>
+        <RxPdo Sm="2" Fixed="1" Mandatory="1">
+          <Index>#x161a</Index>
+          <Name></Name>
+            <Entry>
+              <Index>#x70c0</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x70c0</Index>
+              <SubIndex>2</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x70c0</Index>
+              <SubIndex>3</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x70c0</Index>
+              <SubIndex>4</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+        </RxPdo>
+        <TxPdo Fixed="true" Sm="3">
+			<Index>#x1ba0</Index>
+			<Name>Device TPDO Mapping parameter</Name>
+			<Entry>
+			<Index>#xf100</Index>
+			<SubIndex>1</SubIndex>
+			<BitLen>16</BitLen>
+			<Name>LBus status</Name>
+			<DataType>UINT16</DataType>
+			</Entry>
+			<Entry>
+			<Index>#xf100</Index>
+			<SubIndex>2</SubIndex>
+			<BitLen>16</BitLen>
+			<Name>Fault ID</Name>
+			<DataType>UINT16</DataType>
+			</Entry>
+		</TxPdo>
+        <TxPdo Sm="3" Fixed="1" Mandatory="1">
+          <Index>#x1a01</Index>
+          <Name></Name>
+            <Entry>
+              <Index>#x6001</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6001</Index>
+              <SubIndex>2</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+        </TxPdo>
+        <TxPdo Sm="3" Fixed="1" Mandatory="1">
+          <Index>#x1a12</Index>
+          <Name></Name>
+            <Entry>
+              <Index>#x6080</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6080</Index>
+              <SubIndex>2</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6080</Index>
+              <SubIndex>3</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6080</Index>
+              <SubIndex>4</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+        </TxPdo>
+		   <Mailbox DataLinkLayer="true">
+<Send>
+<Start>4096</Start>
+<Length>128</Length>
+</Send>
+<Recv>
+<Start>5120</Start>
+<Length>128</Length>
+<PollTime>50</PollTime>
+</Recv>
+<Protocol>CoE</Protocol>
+<Protocol>FoE</Protocol>
+<CoE>
+<InitCmds>
+<InitCmd Fixed="true">
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ clear sm pdos (0x1C12) ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>7186</Index>
+<SubIndex>0</SubIndex>
+<Data>00</Data>
+</InitCmd>
+<InitCmd Fixed="true">
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ clear sm pdos (0x1C13) ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>7187</Index>
+<SubIndex>0</SubIndex>
+<Data>00</Data>
+</InitCmd>
+<InitCmd Fixed="true">
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ download pdo 0x1C12:01 index ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>7186</Index>
+<SubIndex>1</SubIndex>
+<Data>a017</Data>
+</InitCmd>
+<InitCmd Fixed="true">
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ download pdo 0x1C12:02 index ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>7186</Index>
+<SubIndex>2</SubIndex>
+<Data>0916</Data>
+</InitCmd>
+<InitCmd Fixed="true">
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ download pdo 0x1C12:03 index ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>7186</Index>
+<SubIndex>3</SubIndex>
+<Data>1a16</Data>
+</InitCmd>
+<InitCmd Fixed="true">
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ download pdo 0x1C12 count ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>7186</Index>
+<SubIndex>0</SubIndex>
+<Data>03</Data>
+</InitCmd>
+<InitCmd Fixed="true">
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ download pdo 0x1C13:01 index ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>7187</Index>
+<SubIndex>1</SubIndex>
+<Data>a01b</Data>
+</InitCmd>
+<InitCmd Fixed="true">
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ download pdo 0x1C13:02 index ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>7187</Index>
+<SubIndex>2</SubIndex>
+<Data>011a</Data>
+</InitCmd>
+<InitCmd Fixed="true">
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ download pdo 0x1C13:03 index ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>7187</Index>
+<SubIndex>3</SubIndex>
+<Data>121a</Data>
+</InitCmd>
+<InitCmd Fixed="true">
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ download pdo 0x1C13 count ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>7187</Index>
+<SubIndex>0</SubIndex>
+<Data>03</Data>
+</InitCmd>
+<InitCmd Fixed="true">
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ clear slot cfg 0xF030 entries ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>61488</Index>
+<SubIndex>0</SubIndex>
+<Data>00</Data>
+</InitCmd>
+<InitCmd Fixed="true">
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ download slot cfg 0xF030 entry ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>61488</Index>
+<SubIndex>1</SubIndex>
+<Data>1010f410</Data>
+</InitCmd>
+<InitCmd Fixed="true">
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ download slot cfg 0xF030 entry ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>61488</Index>
+<SubIndex>2</SubIndex>
+<Data>2010f410</Data>
+</InitCmd>
+<InitCmd Fixed="true">
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ download slot cfg 0xF030 entry ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>61488</Index>
+<SubIndex>3</SubIndex>
+<Data>3010f410</Data>
+</InitCmd>
+<InitCmd Fixed="true">
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ download slot cfg 0xF030 entry ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>61488</Index>
+<SubIndex>4</SubIndex>
+<Data>4010f410</Data>
+</InitCmd>
+<InitCmd Fixed="true">
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ download slot cfg 0xF030 entry count ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>61488</Index>
+<SubIndex>0</SubIndex>
+<Data>04</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ Configuration Error run state ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>63488</Index>
+<SubIndex>1</SubIndex>
+<Data>00</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ Slave and module Error run state ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>63488</Index>
+<SubIndex>2</SubIndex>
+<Data>00</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ EtherCAT Commucation error mode ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>63488</Index>
+<SubIndex>3</SubIndex>
+<Data>01</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ ESC error counter behavor ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>63488</Index>
+<SubIndex>4</SubIndex>
+<Data>00</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ DI module CH0 filter time ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32768</Index>
+<SubIndex>1</SubIndex>
+<Data>0400</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ DI module CH1 filter time ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32768</Index>
+<SubIndex>2</SubIndex>
+<Data>0400</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ DO module CH0 stopmode after EtherCAT lost link ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32832</Index>
+<SubIndex>1</SubIndex>
+<Data>ff</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ DO module CH1 stopmode after EtherCAT lost link ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32832</Index>
+<SubIndex>2</SubIndex>
+<Data>ff</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ DO module CH0 stopvalue after EtherCAT lost link ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32833</Index>
+<SubIndex>1</SubIndex>
+<Data>00</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ DO module CH1 stopvalue after EtherCAT lost link ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32833</Index>
+<SubIndex>2</SubIndex>
+<Data>00</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4AD module CH0 transform mode ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32896</Index>
+<SubIndex>1</SubIndex>
+<Data>80</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4AD module CH1 transform mode ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32896</Index>
+<SubIndex>2</SubIndex>
+<Data>80</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4AD module CH2 transform mode ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32896</Index>
+<SubIndex>3</SubIndex>
+<Data>80</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4AD module CH3 transform mode ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32896</Index>
+<SubIndex>4</SubIndex>
+<Data>80</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4AD module CH0 Filter ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32897</Index>
+<SubIndex>1</SubIndex>
+<Data>08</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4AD module CH1 Filter ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32897</Index>
+<SubIndex>2</SubIndex>
+<Data>08</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4AD module CH2 Filter ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32897</Index>
+<SubIndex>3</SubIndex>
+<Data>08</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4AD module CH3 Filter ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32897</Index>
+<SubIndex>4</SubIndex>
+<Data>08</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4AD module CH0 Detect ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32898</Index>
+<SubIndex>1</SubIndex>
+<Data>00</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4AD module CH1 Detect ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32898</Index>
+<SubIndex>2</SubIndex>
+<Data>00</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4AD module CH2 Detect ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32898</Index>
+<SubIndex>3</SubIndex>
+<Data>00</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4AD module CH3 Detect ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32898</Index>
+<SubIndex>4</SubIndex>
+<Data>00</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4DA module CH0 transform mode ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32960</Index>
+<SubIndex>1</SubIndex>
+<Data>80</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4DA module CH1 transform mode ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32960</Index>
+<SubIndex>2</SubIndex>
+<Data>80</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4DA module CH2 transform mode ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32960</Index>
+<SubIndex>3</SubIndex>
+<Data>80</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4DA module CH3 transform mode ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32960</Index>
+<SubIndex>4</SubIndex>
+<Data>80</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4DA module CH0 Stopmode ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32961</Index>
+<SubIndex>1</SubIndex>
+<Data>00</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4DA module CH1 Stopmode ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32961</Index>
+<SubIndex>2</SubIndex>
+<Data>00</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4DA module CH2 Stopmode ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32961</Index>
+<SubIndex>3</SubIndex>
+<Data>00</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4DA module CH3 Stopmode ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32961</Index>
+<SubIndex>4</SubIndex>
+<Data>00</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4DA module CH0 Stopvalue ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32962</Index>
+<SubIndex>1</SubIndex>
+<Data>0000</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4DA module CH1 Stopvalue ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32962</Index>
+<SubIndex>2</SubIndex>
+<Data>0000</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4DA module CH2 Stopvalue ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32962</Index>
+<SubIndex>3</SubIndex>
+<Data>0000</Data>
+</InitCmd>
+<InitCmd>
+<Transition>PS</Transition>
+<Comment>
+<![CDATA[ 4DA module CH3 Stopvalue ]]>
+</Comment>
+<Timeout>0</Timeout>
+<Ccs>1</Ccs>
+<Index>32962</Index>
+<SubIndex>4</SubIndex>
+<Data>0000</Data>
+</InitCmd>
+</InitCmds>
+<Profile>
+<ChannelInfo>
+<ProfileNo>5001</ProfileNo>
+<AddInfo>0</AddInfo>
+</ChannelInfo>
+</Profile>
+</CoE>
+</Mailbox>
+        </Device>
+      </Devices>
+    </Descriptions>
+  </EtherCATInfo>
+  <EtherCATInfo>
+    <!-- Slave 1 -->
+    <Vendor>
+      <Id>71367</Id>
+    </Vendor>
+    <Descriptions>
+      <Devices>
+        <Device>
+          <Type ProductCode="#x005e0402" RevisionNo="#x00000001">HCFA X5E Servo Driver</Type>
+          <Name><![CDATA[HCFA X5E Servo Driver]]></Name>
+          <Sm Enable="1" StartAddress="#x1000" ControlByte="#x26" DefaultSize="128" />
+          <Sm Enable="1" StartAddress="#x1400" ControlByte="#x22" DefaultSize="128" />
+          <Sm Enable="1" StartAddress="#x1800" ControlByte="#x64" DefaultSize="9" />
+          <Sm Enable="1" StartAddress="#x1c00" ControlByte="#x20" DefaultSize="25" />
+          <RxPdo Sm="2" Fixed="1" Mandatory="1">
+            <Index>#x1600</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x6040</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6060</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x607a</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x60b8</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+          </RxPdo>
+          <TxPdo Sm="3" Fixed="1" Mandatory="1">
+            <Index>#x1a00</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x603f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6041</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6064</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6061</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x60b9</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x60ba</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x60f4</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x60fd</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x213f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+          </TxPdo>
+        </Device>
+      </Devices>
+    </Descriptions>
+  </EtherCATInfo>
+  <EtherCATInfo>
+    <!-- Slave 2 -->
+    <Vendor>
+      <Id>71367</Id>
+    </Vendor>
+    <Descriptions>
+      <Devices>
+        <Device>
+          <Type ProductCode="#x005e0402" RevisionNo="#x00000001">HCFA X5E Servo Driver</Type>
+          <Name><![CDATA[HCFA X5E Servo Driver]]></Name>
+          <Sm Enable="1" StartAddress="#x1000" ControlByte="#x26" DefaultSize="128" />
+          <Sm Enable="1" StartAddress="#x1400" ControlByte="#x22" DefaultSize="128" />
+          <Sm Enable="1" StartAddress="#x1800" ControlByte="#x64" DefaultSize="9" />
+          <Sm Enable="1" StartAddress="#x1c00" ControlByte="#x20" DefaultSize="25" />
+          <RxPdo Sm="2" Fixed="1" Mandatory="1">
+            <Index>#x1600</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x6040</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6060</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x607a</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x60b8</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+          </RxPdo>
+          <TxPdo Sm="3" Fixed="1" Mandatory="1">
+            <Index>#x1a00</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x603f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6041</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6064</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6061</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x60b9</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x60ba</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x60f4</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x60fd</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x213f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+          </TxPdo>
+        </Device>
+      </Devices>
+    </Descriptions>
+  </EtherCATInfo>
+  <EtherCATInfo>
+    <!-- Slave 3 -->
+    <Vendor>
+      <Id>71367</Id>
+    </Vendor>
+    <Descriptions>
+      <Devices>
+        <Device>
+          <Type ProductCode="#x005e0402" RevisionNo="#x00000001">HCFA X5E Servo Driver</Type>
+          <Name><![CDATA[HCFA X5E Servo Driver]]></Name>
+          <Sm Enable="1" StartAddress="#x1000" ControlByte="#x26" DefaultSize="128" />
+          <Sm Enable="1" StartAddress="#x1400" ControlByte="#x22" DefaultSize="128" />
+          <Sm Enable="1" StartAddress="#x1800" ControlByte="#x64" DefaultSize="9" />
+          <Sm Enable="1" StartAddress="#x1c00" ControlByte="#x20" DefaultSize="25" />
+          <RxPdo Sm="2" Fixed="1" Mandatory="1">
+            <Index>#x1600</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x6040</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6060</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x607a</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x60b8</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+          </RxPdo>
+          <TxPdo Sm="3" Fixed="1" Mandatory="1">
+            <Index>#x1a00</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x603f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6041</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6064</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6061</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x60b9</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x60ba</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x60f4</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x60fd</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x213f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+          </TxPdo>
+        </Device>
+      </Devices>
+    </Descriptions>
+  </EtherCATInfo>
+  <EtherCATInfo>
+    <!-- Slave 4 -->
+    <Vendor>
+      <Id>26</Id>
+    </Vendor>
+    <Descriptions>
+      <Devices>
+        <Device>
+          <Type ProductCode="#x50440200" RevisionNo="#x05132016">Hans Robot</Type>
+          <Name><![CDATA[Hans Robot Elfin]]></Name>
+          <Sm Enable="1" StartAddress="#x1000" ControlByte="#x36" DefaultSize="256" />
+          <Sm Enable="1" StartAddress="#x1200" ControlByte="#x32" DefaultSize="256" />
+          <Sm Enable="1" StartAddress="#x1400" ControlByte="#x34" DefaultSize="64" />
+          <Sm Enable="1" StartAddress="#x1800" ControlByte="#x30" DefaultSize="64" />
+          <RxPdo Sm="2" Fixed="1" Mandatory="1">
+            <Index>#x1600</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x6040</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6060</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x607a</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6071</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x3097</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </RxPdo>
+          <RxPdo Sm="2" Fixed="1" Mandatory="1">
+            <Index>#x1610</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x6840</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6860</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x687a</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6871</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x3897</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </RxPdo>
+          <TxPdo Sm="3" Fixed="1" Mandatory="1">
+            <Index>#x1a00</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x6041</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6077</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6064</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x606c</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x603f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6061</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x3154</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>16</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x6164</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </TxPdo>
+          <TxPdo Sm="3" Fixed="1" Mandatory="1">
+            <Index>#x1a10</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x6841</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6877</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6864</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x686c</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x683f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6861</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x3954</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>16</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x6964</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </TxPdo>
+        </Device>
+      </Devices>
+    </Descriptions>
+  </EtherCATInfo>
+  <EtherCATInfo>
+    <!-- Slave 5 -->
+    <Vendor>
+      <Id>26</Id>
+    </Vendor>
+    <Descriptions>
+      <Devices>
+        <Device>
+          <Type ProductCode="#x50440200" RevisionNo="#x05132016">Hans Robot</Type>
+          <Name><![CDATA[Hans Robot Elfin]]></Name>
+          <Sm Enable="1" StartAddress="#x1000" ControlByte="#x36" DefaultSize="256" />
+          <Sm Enable="1" StartAddress="#x1200" ControlByte="#x32" DefaultSize="256" />
+          <Sm Enable="1" StartAddress="#x1400" ControlByte="#x34" DefaultSize="64" />
+          <Sm Enable="1" StartAddress="#x1800" ControlByte="#x30" DefaultSize="64" />
+          <RxPdo Sm="2" Fixed="1" Mandatory="1">
+            <Index>#x1600</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x6040</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6060</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x607a</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6071</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x3097</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </RxPdo>
+          <RxPdo Sm="2" Fixed="1" Mandatory="1">
+            <Index>#x1610</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x6840</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6860</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x687a</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6871</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x3897</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </RxPdo>
+          <TxPdo Sm="3" Fixed="1" Mandatory="1">
+            <Index>#x1a00</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x6041</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6077</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6064</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x606c</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x603f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6061</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x3154</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>16</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x6164</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </TxPdo>
+          <TxPdo Sm="3" Fixed="1" Mandatory="1">
+            <Index>#x1a10</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x6841</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6877</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6864</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x686c</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x683f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6861</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x3954</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>16</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x6964</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </TxPdo>
+        </Device>
+      </Devices>
+    </Descriptions>
+  </EtherCATInfo>
+  <EtherCATInfo>
+    <!-- Slave 6 -->
+    <Vendor>
+      <Id>26</Id>
+    </Vendor>
+    <Descriptions>
+      <Devices>
+        <Device>
+          <Type ProductCode="#x50440200" RevisionNo="#x05132016">Hans Robot</Type>
+          <Name><![CDATA[Hans Robot Elfin]]></Name>
+          <Sm Enable="1" StartAddress="#x1000" ControlByte="#x36" DefaultSize="256" />
+          <Sm Enable="1" StartAddress="#x1200" ControlByte="#x32" DefaultSize="256" />
+          <Sm Enable="1" StartAddress="#x1400" ControlByte="#x34" DefaultSize="64" />
+          <Sm Enable="1" StartAddress="#x1800" ControlByte="#x30" DefaultSize="64" />
+          <RxPdo Sm="2" Fixed="1" Mandatory="1">
+            <Index>#x1600</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x6040</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6060</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x607a</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6071</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x3097</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </RxPdo>
+          <RxPdo Sm="2" Fixed="1" Mandatory="1">
+            <Index>#x1610</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x6840</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6860</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x687a</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6871</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x3897</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </RxPdo>
+          <TxPdo Sm="3" Fixed="1" Mandatory="1">
+            <Index>#x1a00</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x6041</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6077</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6064</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x606c</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x603f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6061</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x3154</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>16</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x6164</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </TxPdo>
+          <TxPdo Sm="3" Fixed="1" Mandatory="1">
+            <Index>#x1a10</Index>
+            <Name></Name>
+            <Entry>
+              <Index>#x6841</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6877</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6864</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x686c</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x683f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6861</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name></Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x3954</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name></Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>16</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x6964</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name></Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </TxPdo>
+        </Device>
+      </Devices>
+    </Descriptions>
+  </EtherCATInfo>
+</EtherCATInfoList>

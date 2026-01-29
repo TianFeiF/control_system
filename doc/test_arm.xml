@@ -1,0 +1,1194 @@
+<?xml version="1.0" ?>
+<EtherCATInfoList>
+<EtherCATInfo>
+    <!-- Slave 0 -->
+    <Vendor>
+      <Id>26</Id>
+    </Vendor>
+    <Descriptions>
+      <Devices>
+        <Device>
+          <Type ProductCode="#x50440200" RevisionNo="#x05132016">Hans Robot</Type>
+          <Name><![CDATA[Hans Robot Elfin]]></Name>
+          <Sm Enable="1" StartAddress="#x1000" ControlByte="#x36" DefaultSize="256" />
+          <Sm Enable="1" StartAddress="#x1200" ControlByte="#x32" DefaultSize="256" />
+          <Sm Enable="1" StartAddress="#x1400" ControlByte="#x34" DefaultSize="64" />
+          <Sm Enable="1" StartAddress="#x1800" ControlByte="#x30" DefaultSize="64" />
+          <RxPdo Sm="2" Fixed="1" Mandatory="1">
+            <Index>#x1600</Index>
+            <Name>Receive PDO1 Mapping</Name>
+            <Entry>
+              <Index>#x6040</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Controlword</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6060</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name>Modes Of Operation</Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x607a</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Target Position</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6071</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Target Torque</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x3097</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>VelFF_CH1</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </RxPdo>
+          <RxPdo Sm="2" Fixed="1" Mandatory="1">
+            <Index>#x1610</Index>
+            <Name>Receive PDO2 Mapping</Name>
+            <Entry>
+              <Index>#x6840</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis2 Controlword</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6860</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name>Axis2 Modes Of Operation</Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x687a</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Axis2 Target Position</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6871</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis2 Target Torque</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x3897</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>VelFF_CH2</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </RxPdo>
+          <TxPdo Sm="3" Fixed="1" Mandatory="1">
+            <Index>#x1a00</Index>
+            <Name>Transmit PDO1 Mapping</Name>
+            <Entry>
+              <Index>#x6041</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Statusword</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6077</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis1 Torque actual value</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6064</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Position Actual Value</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x606c</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Velocity Actual Value</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x603f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis1 Error code</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6061</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name>Modes Of Operation Display</Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x3154</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>AccelerometerX</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x2001</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>TargetCurrent_Feedback</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6164</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Multi Position Actual Value </Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </TxPdo>
+          <TxPdo Sm="3" Fixed="1" Mandatory="1">
+            <Index>#x1a10</Index>
+            <Name>Transmit PDO2 Mapping</Name>
+            <Entry>
+              <Index>#x6841</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis2 Statusword</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6877</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis2 Torque actual value</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6864</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Axis2 Position Actual Value</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x686c</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Axis2 Velocity Actual Value</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x683f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis2 Error code</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6861</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name>Axis2 Modes Of Operation Display</Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x3954</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>AccelerometerY</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x2801</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>AccelerometerZ</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6964</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Axis2 Multi Position Actual Value</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </TxPdo>
+        </Device>
+      </Devices>
+    </Descriptions>
+  </EtherCATInfo>
+  <EtherCATInfo>
+    <!-- Slave 1 -->
+    <Vendor>
+      <Id>26</Id>
+    </Vendor>
+    <Descriptions>
+      <Devices>
+        <Device>
+          <Type ProductCode="#x50440200" RevisionNo="#x05132016">Hans Robot</Type>
+          <Name><![CDATA[Hans Robot Elfin]]></Name>
+          <Sm Enable="1" StartAddress="#x1000" ControlByte="#x36" DefaultSize="256" />
+          <Sm Enable="1" StartAddress="#x1200" ControlByte="#x32" DefaultSize="256" />
+          <Sm Enable="1" StartAddress="#x1400" ControlByte="#x34" DefaultSize="64" />
+          <Sm Enable="1" StartAddress="#x1800" ControlByte="#x30" DefaultSize="64" />
+          <RxPdo Sm="2" Fixed="1" Mandatory="1">
+            <Index>#x1600</Index>
+            <Name>Receive PDO1 Mapping</Name>
+            <Entry>
+              <Index>#x6040</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Controlword</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6060</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name>Modes Of Operation</Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x607a</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Target Position</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6071</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Target Torque</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x3097</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>VelFF_CH1</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </RxPdo>
+          <RxPdo Sm="2" Fixed="1" Mandatory="1">
+            <Index>#x1610</Index>
+            <Name>Receive PDO2 Mapping</Name>
+            <Entry>
+              <Index>#x6840</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis2 Controlword</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6860</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name>Axis2 Modes Of Operation</Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x687a</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Axis2 Target Position</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6871</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis2 Target Torque</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x3897</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>VelFF_CH2</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </RxPdo>
+          <TxPdo Sm="3" Fixed="1" Mandatory="1">
+            <Index>#x1a00</Index>
+            <Name>Transmit PDO1 Mapping</Name>
+            <Entry>
+              <Index>#x6041</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Statusword</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6077</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis1 Torque actual value</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6064</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Position Actual Value</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x606c</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Velocity Actual Value</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x603f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis1 Error code</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6061</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name>Modes Of Operation Display</Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x3154</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>AccelerometerX</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x2001</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>TargetCurrent_Feedback</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6164</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Multi Position Actual Value </Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </TxPdo>
+          <TxPdo Sm="3" Fixed="1" Mandatory="1">
+            <Index>#x1a10</Index>
+            <Name>Transmit PDO2 Mapping</Name>
+            <Entry>
+              <Index>#x6841</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis2 Statusword</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6877</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis2 Torque actual value</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6864</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Axis2 Position Actual Value</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x686c</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Axis2 Velocity Actual Value</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x683f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis2 Error code</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6861</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name>Axis2 Modes Of Operation Display</Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x3954</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>AccelerometerY</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x2801</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>AccelerometerZ</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6964</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Axis2 Multi Position Actual Value</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </TxPdo>
+        </Device>
+      </Devices>
+    </Descriptions>
+  </EtherCATInfo>
+  <EtherCATInfo>
+    <!-- Slave 2 -->
+    <Vendor>
+      <Id>26</Id>
+    </Vendor>
+    <Descriptions>
+      <Devices>
+        <Device>
+          <Type ProductCode="#x50440200" RevisionNo="#x05132016">Hans Robot</Type>
+          <Name><![CDATA[Hans Robot Elfin]]></Name>
+          <Sm Enable="1" StartAddress="#x1000" ControlByte="#x36" DefaultSize="256" />
+          <Sm Enable="1" StartAddress="#x1200" ControlByte="#x32" DefaultSize="256" />
+          <Sm Enable="1" StartAddress="#x1400" ControlByte="#x34" DefaultSize="64" />
+          <Sm Enable="1" StartAddress="#x1800" ControlByte="#x30" DefaultSize="64" />
+          <RxPdo Sm="2" Fixed="1" Mandatory="1">
+            <Index>#x1600</Index>
+            <Name>Receive PDO1 Mapping</Name>
+            <Entry>
+              <Index>#x6040</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Controlword</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6060</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name>Modes Of Operation</Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x607a</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Target Position</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6071</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Target Torque</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x3097</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>VelFF_CH1</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </RxPdo>
+          <RxPdo Sm="2" Fixed="1" Mandatory="1">
+            <Index>#x1610</Index>
+            <Name>Receive PDO2 Mapping</Name>
+            <Entry>
+              <Index>#x6840</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis2 Controlword</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6860</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name>Axis2 Modes Of Operation</Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x687a</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Axis2 Target Position</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6871</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis2 Target Torque</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x3897</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>VelFF_CH2</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </RxPdo>
+          <TxPdo Sm="3" Fixed="1" Mandatory="1">
+            <Index>#x1a00</Index>
+            <Name>Transmit PDO1 Mapping</Name>
+            <Entry>
+              <Index>#x6041</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Statusword</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6077</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis1 Torque actual value</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6064</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Position Actual Value</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x606c</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Velocity Actual Value</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x603f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis1 Error code</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6061</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name>Modes Of Operation Display</Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x3154</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>AccelerometerX</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x2001</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>TargetCurrent_Feedback</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6164</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Multi Position Actual Value </Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </TxPdo>
+          <TxPdo Sm="3" Fixed="1" Mandatory="1">
+            <Index>#x1a10</Index>
+            <Name>Transmit PDO2 Mapping</Name>
+            <Entry>
+              <Index>#x6841</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis2 Statusword</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6877</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis2 Torque actual value</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6864</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Axis2 Position Actual Value</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x686c</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Axis2 Velocity Actual Value</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x683f</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Axis2 Error code</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6861</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>8</BitLen>
+              <Name>Axis2 Modes Of Operation Display</Name>
+              <DataType>UINT8</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>8</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x3954</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>AccelerometerY</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x2801</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>AccelerometerZ</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6964</Index>
+              <SubIndex>0</SubIndex>
+              <BitLen>32</BitLen>
+              <Name>Axis2 Multi Position Actual Value</Name>
+              <DataType>UINT32</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+            <Entry>
+              <Index>#x0000</Index>
+              <BitLen>32</BitLen>
+            </Entry>
+          </TxPdo>
+        </Device>
+      </Devices>
+    </Descriptions>
+  </EtherCATInfo>
+  <EtherCATInfo>
+    <!-- Slave 3 -->
+    <Vendor>
+      <Id>2103569</Id>
+    </Vendor>
+    <Descriptions>
+      <Devices>
+        <Device>
+          <Type ProductCode="#x10003201" RevisionNo="#x00000001">F2838x CPU1 EtherCAT Slave</Type>
+          <Name><![CDATA[F2838x CPU1 EtherCAT Slave]]></Name>
+          <Sm Enable="1" StartAddress="#x1000" ControlByte="#x26" DefaultSize="512" />
+          <Sm Enable="1" StartAddress="#x1200" ControlByte="#x22" DefaultSize="512" />
+          <Sm Enable="1" StartAddress="#x1400" ControlByte="#x64" DefaultSize="11" />
+          <Sm Enable="1" StartAddress="#x1700" ControlByte="#x20" DefaultSize="11" />
+          <RxPdo Sm="2" Fixed="1" Mandatory="1">
+            <Index>#x1600</Index>
+            <Name>LEDS process data mapping</Name>
+            <Entry>
+              <Index>#x7001</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>DigitalOutputs</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x7002</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusDoCommand</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x7003</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusSlaveID</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x7004</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusFunction</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x7005</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterAddr</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x7006</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterCount</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x7007</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData0</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x7008</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData1</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x7009</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData2</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x700a</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData3</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x700b</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData4</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x700c</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData5</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x700d</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData6</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x700e</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData7</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x700f</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData8</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x7010</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData9</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x7011</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData10</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+          </RxPdo>
+          <TxPdo Sm="3" Fixed="1" Mandatory="1">
+            <Index>#x1a00</Index>
+            <Name>switches process data mapping</Name>
+            <Entry>
+              <Index>#x6001</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>DigitalInputs</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6002</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>AnalogInputCH1</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6003</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>AnalogInputCH2</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6004</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Temperature</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6005</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>Vdc_Bus</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6006</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusState</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6007</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusErrorCode</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6008</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegistersCount</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6009</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData0</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x600a</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData1</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x600b</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData2</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x600c</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData3</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x600d</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData4</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x600e</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData5</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x600f</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData6</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6010</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData7</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6011</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData8</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6012</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData9</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6013</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData10</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+            <Entry>
+              <Index>#x6014</Index>
+              <SubIndex>1</SubIndex>
+              <BitLen>16</BitLen>
+              <Name>ModbusRegisterData11</Name>
+              <DataType>UINT16</DataType>
+            </Entry>
+          </TxPdo>
+        </Device>
+      </Devices>
+    </Descriptions>
+  </EtherCATInfo>
+</EtherCATInfoList>
