@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/home/phi/control_system/test/build",
+  "command": "/usr/bin/cc  -I/home/phi/control_system/test/include -O3 -DNDEBUG -std=c11 -o CMakeFiles/test_all.dir/src/test_all.c.o -c /home/phi/control_system/test/src/test_all.c",
+  "file": "/home/phi/control_system/test/src/test_all.c"
+},
+{
+  "directory": "/home/phi/control_system/test/build",
+  "command": "/usr/bin/cc -D_POSIX_C_SOURCE=200809L  -O3 -DNDEBUG -std=c11 -o CMakeFiles/test_io_raw.dir/src/test_io_raw.c.o -c /home/phi/control_system/test/src/test_io_raw.c",
+  "file": "/home/phi/control_system/test/src/test_io_raw.c"
+}
+]
