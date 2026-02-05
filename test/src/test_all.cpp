@@ -1,4 +1,6 @@
 #include "test_all.hpp"
+#include "driver.hpp"
+#include "keyboard_control.hpp"
 #include <cstdio>
 #include <atomic>
 #include <pthread.h>
@@ -21,23 +23,58 @@
  *  - 本文件只做“测试用途”的流程串联，未实现完整的伺服控制策略。
  */
 
+/*
+ * ======================================================================================
+ * 全局变量定义
+ * ======================================================================================
+ */
+
+/* EtherCAT 主站实例指针 */
 ec_master_t *master = NULL;
+
+/* EtherCAT 域 (Domain) 指针
+ * Domain 用于管理一组 PDO 的数据交换。本例中使用一个 Domain (domain1) 管理所有从站的 PDO。
+ */
 ec_domain_t *domain1 = NULL;
-ec_slave_config_t *sc = NULL;
+
+/* 
+ * 域数据指针 (Process Data Pointer)
+ * 指向 Domain 映射的内存区域。读写 PDO 数据时，通过 offset 偏移量在此内存区域操作。
+ * 例如：EC_READ_U16(domain1_pd + offset)
+ */
 uint8_t *domain1_pd = NULL;
+
+/* 
+ * 周期唤醒时间点
+ * 用于 sleep_until 函数，确保主循环以精确的周期运行。
+ */
 struct timespec wakeup_time;
 
+/* 从站配置对象数组 */
 static ec_slave_config_t *slave_configs[SLAVE_COUNT] = {};
+/* 从站物理位置数组（别名/位置） */
 static unsigned int slave_positions[SLAVE_COUNT] = {};
+/* 实际配置的从站数量 */
 static unsigned int slave_count = 0;
 
+/* 运行标志位，用于信号处理和退出循环 */
 static volatile int run = 1;
-static std::atomic<int> g_selected_axis{1};
-static std::atomic<int> g_axis_dir{0};
+
+/* 运动控制相关全局变量 */
+static int32_t cmd_target[10] = {};
+static double cmd_frac[10] = {};
+static double inc_per_cycle = 0.0;
 
 void sleep_until(struct timespec *ts, long delay_us);
 static uint64_t monotonic_time_ns();
 static void print_process_table_if_needed(const ec_master_state_t *ms, const ec_domain_state_t *ds);
+
+/*
+ * ======================================================================================
+ * 辅助函数
+ * ======================================================================================
+ */
+
 
 static void print_master_domain_state(const char *tag)
 {
@@ -102,6 +139,21 @@ static slave_data *axis_device(int axis_id)
     }
     return NULL;
 }
+/*
+    *ID1:INEXBOT_IO_R4
+    *ID2:F2838x
+*/
+static slave_data *io_device(int io_id)
+{
+    switch (io_id) {
+    case 1:
+        return &device_io;
+    case 2:
+        return &device_f2838x;
+    default:
+        return NULL;
+    }
+}
 
 static const char *wc_state_str(ec_wc_state_t s)
 {
@@ -117,102 +169,23 @@ static const char *wc_state_str(ec_wc_state_t s)
     }
 }
 
-static void *keyboard_thread_main(void *)
-{
-    struct termios orig = {};
-    if (tcgetattr(STDIN_FILENO, &orig) != 0) {
-        while (run) {
-            usleep(1000);
-        }
-        return NULL;
-    }
-
-    struct termios raw = orig;
-    raw.c_lflag &= (tcflag_t) ~(ICANON | ECHO);
-    raw.c_cc[VMIN] = 0;
-    raw.c_cc[VTIME] = 0;
-    tcsetattr(STDIN_FILENO, TCSANOW, &raw);
-
-    const int old_flags = fcntl(STDIN_FILENO, F_GETFL, 0);
-    if (old_flags >= 0) {
-        fcntl(STDIN_FILENO, F_SETFL, old_flags | O_NONBLOCK);
-    }
-
-    int esc_state = 0;
-    while (run) {
-        fd_set rfds;
-        FD_ZERO(&rfds);
-        FD_SET(STDIN_FILENO, &rfds);
-        struct timeval tv;
-        tv.tv_sec = 0;
-        tv.tv_usec = 20000;
-        const int rv = select(STDIN_FILENO + 1, &rfds, NULL, NULL, &tv);
-        if (rv <= 0) {
-            continue;
-        }
-
-        unsigned char buf[16];
-        const ssize_t n = read(STDIN_FILENO, buf, sizeof(buf));
-        if (n <= 0) {
-            continue;
-        }
-
-        for (ssize_t i = 0; i < n; ++i) {
-            const unsigned char c = buf[i];
-            if (esc_state == 1) {
-                if (c == '[') {
-                    esc_state = 2;
-                } else {
-                    esc_state = 0;
-                }
-                continue;
-            }
-            if (esc_state == 2) {
-                if (c == 'D') {
-                    g_axis_dir.store(-1);
-                } else if (c == 'C') {
-                    g_axis_dir.store(+1);
-                } else if (c == 'A') {
-                    g_axis_dir.store(+1);
-                } else if (c == 'B') {
-                    g_axis_dir.store(-1);
-                }
-                esc_state = 0;
-                continue;
-            }
-
-            if (c >= '1' && c <= '9') {
-                g_selected_axis.store((int)(c - '0'));
-                continue;
-            }
-            if (c == '0') {
-                g_selected_axis.store(0);
-                g_axis_dir.store(0);
-                continue;
-            }
-            if (c == ' ' || c == 's' || c == 'S') {
-                g_axis_dir.store(0);
-                continue;
-            }
-            if (c == 'q' || c == 'Q') {
-                run = 0;
-                break;
-            }
-
-            if (c == 0x1b) {
-                esc_state = 1;
-                continue;
-            }
-        }
-    }
-
-    tcsetattr(STDIN_FILENO, TCSANOW, &orig);
-    if (old_flags >= 0) {
-        fcntl(STDIN_FILENO, F_SETFL, old_flags);
-    }
-    return NULL;
-}
-
+/*
+ * ======================================================================================
+ * 等待 Domain Working Counter (WC) 稳定
+ * ======================================================================================
+ * 
+ * 功能：
+ * 阻塞等待 Domain 的 WC 值达到预期值 (min_wc) 并且连续保持稳定 (stable_cycles)。
+ * 
+ * 参数：
+ * - min_wc: 预期的最小 WC 值 (通常等于所有从站 PDO entry 的总和)。
+ * - stable_cycles: 要求连续多少个周期 WC 达标才算稳定。
+ * - timeout_ms: 超时时间 (毫秒)。
+ * 
+ * 原理：
+ * WC 是 EtherCAT 报文经过从站时，从站成功处理数据后硬件自动增加的计数器。
+ * WC 达标意味着所有从站都在正常交换数据。
+ */
 static int wait_for_domain_wc(unsigned int min_wc, int stable_cycles, int timeout_ms)
 {
     if ((int)min_wc <= 0) {
@@ -244,6 +217,7 @@ static int wait_for_domain_wc(unsigned int min_wc, int stable_cycles, int timeou
         ecrt_domain_state(domain1, &ds);
         print_process_table_if_needed(&ms, &ds);
 
+        /* 检查链路状态 + WC 状态 + WC 值 */
         if (ms.link_up && ds.wc_state == EC_WC_COMPLETE && ds.working_counter >= min_wc) {
             stable++;
         } else {
@@ -274,6 +248,7 @@ static int wait_for_domain_wc(unsigned int min_wc, int stable_cycles, int timeou
     print_slave_states("wait_wc_timeout");
     return -1;
 }
+
 
 static void print_process_table_if_needed(const ec_master_state_t *ms, const ec_domain_state_t *ds)
 {
@@ -358,16 +333,84 @@ static void print_process_table_if_needed(const ec_master_state_t *ms, const ec_
            (int32_t)input_val_24,
            (int32_t)input_val_25);
     printf("+--------+----+-------+------+-----+----------+----------+----------+------------+------------+------------+------------+------------+------------+------------+------------+------------+\n");
+
+    const int selected_axis = g_selected_axis.load();
+    const int axis_dir = g_axis_dir.load();
+    if (selected_axis >= 1 && selected_axis <= 9) {
+        slave_data *dev = axis_device(selected_axis);
+        if (dev) {
+            const uint16_t ctrl = EC_READ_U16(domain1_pd + dev->out.controlWord);
+            const uint16_t st = EC_READ_U16(domain1_pd + dev->in.statusword);
+            const uint16_t err = EC_READ_U16(domain1_pd + dev->in.errorCode);
+            const uint8_t mode_out = EC_READ_U8(domain1_pd + dev->out.workModeOut);
+            const uint8_t mode_in = EC_READ_U8(domain1_pd + dev->in.workModeIn);
+            const int32_t act = (int32_t) EC_READ_S32(domain1_pd + dev->in.actualPosition);
+            const int32_t tgt = (int32_t) EC_READ_S32(domain1_pd + dev->out.targetPosition);
+            if (selected_axis <= 3) {
+                const int32_t fe = (int32_t) EC_READ_S32(domain1_pd + dev->in.followingError);
+                const uint32_t di = EC_READ_U32(domain1_pd + dev->in.digitalInputs);
+                const uint16_t se = EC_READ_U16(domain1_pd + dev->in.servoErrorCode);
+                printf("SEL=%d dir=%d ctrl=0x%04X st=0x%04X err=0x%04X se=0x%04X di=0x%08X mode_in=%u mode_out=%u act=%d tgt=%d fe=%d\n",
+                       selected_axis,
+                       axis_dir,
+                       (unsigned) ctrl,
+                       (unsigned) st,
+                       (unsigned) err,
+                       (unsigned) se,
+                       (unsigned) di,
+                       (unsigned) mode_in,
+                       (unsigned) mode_out,
+                       (int) act,
+                       (int) tgt,
+                       (int) fe);
+            } else {
+                printf("SEL=%d dir=%d ctrl=0x%04X st=0x%04X err=0x%04X mode_in=%u mode_out=%u act=%d tgt=%d\n",
+                       selected_axis,
+                       axis_dir,
+                       (unsigned) ctrl,
+                       (unsigned) st,
+                       (unsigned) err,
+                       (unsigned) mode_in,
+                       (unsigned) mode_out,
+                       (int) act,
+                       (int) tgt);
+            }
+        } else {
+            printf("SEL=%d dir=%d (invalid axis)\n", selected_axis, axis_dir);
+        }
+    } else {
+        printf("SEL=%d dir=%d\n", selected_axis, axis_dir);
+    }
     fflush(stdout);
 
     cycle_count++;
 }
 
 
+/*
+ * ======================================================================================
+ * EtherCAT 初始化函数
+ * ======================================================================================
+ * 
+ * 功能：
+ * 1. 请求 EtherCAT 主站实例
+ * 2. 创建 Domain (Process Data Domain)
+ * 3. 遍历 slave_specs 数组配置从站：
+ *    - 获取从站配置句柄
+ *    - 配置 PDO 映射 (RxPDO/TxPDO)
+ *    - 配置 DC (Distributed Clocks) 同步参数 (Sync0 周期)
+ * 4. 注册 PDO Entry 获取偏移量
+ * 5. 激活主站并获取 Process Data 内存指针
+ * 
+ * 库函数化建议：
+ * - 将 slave_specs 数组作为参数传入
+ * - 将 cycle_ns 作为参数传入
+ * - 返回 master/domain/domain_pd 指针或结构体
+ */
 int init_ethercat ()
 {
-
     printf("Requesting EtherCAT master...\n");
+    /* 1. 请求主站实例 (Index 0) */
     master = ecrt_request_master(0);
     if (!master) {
         fprintf(stderr, "Failed to request master.\n");
@@ -375,6 +418,7 @@ int init_ethercat ()
     }
 
     printf("Creating domain...\n");
+    /* 2. 创建 Domain */
     domain1 = ecrt_master_create_domain(master);
     if (!domain1) {
         fprintf(stderr, "Failed to create domain.\n");
@@ -386,12 +430,6 @@ int init_ethercat ()
      *  - position: 站号（基于 BusAlias 的物理位置）
      *  - vendor_id/product_code: ESI 识别信息
      *  - syncs: 该从站的 PDO/SyncMgr 描述（见 test_all.hpp）
-     *
-     * 这里的循环会逐个调用：
-     *  - ecrt_master_slave_config: 获取从站配置句柄 sc_i
-     *  - ecrt_slave_config_pdos: 把 syncs 中描述的 PDO 映射写入 master 配置
-     *
-     * 注意：这里只配置 PDO 映射，不在此处做 SDO 参数写入（如果需要可扩展）。
      */
     struct {
         unsigned int position;
@@ -408,9 +446,13 @@ int init_ethercat ()
         {ETHERCAT_SLAVE_6_HANS_ROBOT_POS, HANS_ROBOT_VENDOR_ID, HANS_ROBOT_PRODUCT_CODE, slave_6_syncs},
         {ETHERCAT_SLAVE_7_F2838x_POS, F2838x_VENDOR_ID, F2838x_PRODUCT_CODE, slave_7_syncs},
     };
+    const uint32_t cycle_ns = (uint32_t) CYCLE_US * 1000u;
 
+    /* 3. 遍历配置从站 */
     for (unsigned int i = 0; i < (sizeof(slave_specs) / sizeof(slave_specs[0])); ++i) {
         printf("Configuring slave %u...\n", i);
+        
+        /* 获取从站配置句柄 */
         ec_slave_config_t *sc_i = ecrt_master_slave_config(
             master,
             BusAlias,
@@ -428,20 +470,29 @@ int init_ethercat ()
             slave_positions[i] = slave_specs[i].position;
         }
 
+        /* 配置 PDO (Sync Manager) */
         if (ecrt_slave_config_pdos(sc_i, EC_END, slave_specs[i].syncs)) {
             fprintf(stderr, "Failed to configure PDOs for slave %u.\n", i);
             return -1;
+        }
+
+        /* 
+         * 配置 DC (Distributed Clocks) 
+         * assign_activate = 0x0300 (启用 Sync0)
+         * cycle_time = cycle_ns (同步周期)
+         * 仅对伺服驱动器 (HCFA/Hans) 启用 DC
+         */
+        if (slave_specs[i].position >= ETHERCAT_SLAVE_1_HCFA_X3E_POS && slave_specs[i].position <= ETHERCAT_SLAVE_6_HANS_ROBOT_POS) {
+            ecrt_slave_config_dc(sc_i, 0x0300, cycle_ns, 0, 0, 0);
         }
     }
     slave_count = (unsigned int)(sizeof(slave_specs) / sizeof(slave_specs[0]));
 
     printf("Registering PDO entries...\n");
     /*
-     * domain1_regs 在 [test_all.hpp] 中定义，负责把每个 PDO entry 注册到 domain，
-     * 并把“entry 在 process data 中的偏移量”回写到对应的 device_xxx 结构体里。
-     *
-     * 例如：device_hcfa_servo[0].out.controlWord 最终会变成一个 offset，
-     * 之后通过 EC_WRITE_U16(domain1_pd + offset, value) 写入到 0x6040:00。
+     * 4. 注册 PDO Entry
+     * domain1_regs 定义了所有需要交换的变量及其对应的偏移量指针。
+     * 注册成功后，IgH Master 会自动计算并在偏移量指针中填入 offset。
      */
     if (ecrt_domain_reg_pdo_entry_list(domain1, domain1_regs)) {
         fprintf(stderr, "PDO entry registration failed.\n");
@@ -450,14 +501,16 @@ int init_ethercat ()
 
     printf("Activating master...\n");
     /*
-     * 激活 master 会完成内部资源申请并固定 PDO 映射。
-     * 之后可通过 ecrt_domain_data 拿到 process data 的内存指针。
+     * 5. 激活主站
+     * 此时 Master 会锁定配置，开始周期性数据交换。
+     * 必须在申请 Domain Data 之前激活。
      */
     if (ecrt_master_activate(master)) {
         fprintf(stderr, "Failed to activate master.\n");
         return -1;
     }
 
+    /* 获取 Process Data 内存指针 */
     domain1_pd = ecrt_domain_data(domain1);
     if (!domain1_pd) {
         fprintf(stderr, "Failed to retrieve domain data pointer.\n");
@@ -470,6 +523,7 @@ int init_ethercat ()
     print_slave_states("init");
     return 0;
 }
+
 
 void signal_handler(int sig) {
     (void) sig;
@@ -497,6 +551,16 @@ static uint64_t monotonic_time_ns()
     return (uint64_t) ts.tv_sec * 1000000000ULL + (uint64_t) ts.tv_nsec;
 }
 
+/*
+ * ======================================================================================
+ * DC 时钟同步预热函数
+ * ======================================================================================
+ * 
+ * 功能：
+ * 在正式使能伺服前，运行一段“空循环”，仅进行过程数据交换和时钟同步。
+ * 目的：让主站和从站的 DC 时钟（Distributed Clocks）锁定稳定。
+ * 若 DC 未锁定就使能伺服，可能会导致从站报错（Sync Error）。
+ */
 int sync_clocks(int cycles)
 {
     if (cycles <= 0) {
@@ -515,17 +579,18 @@ int sync_clocks(int cycles)
     for (int i = 0; i < cycles && run; ++i) {
         sleep_until(&wakeup_time, CYCLE_US);
 
+        /* 1. 设置应用时间 */
         ecrt_master_application_time(master, monotonic_time_ns());
 
-        /* 收到主站收包，并解析 domain 的 TxPDO -> domain1_pd */
+        /* 2. 接收数据 */
         ecrt_master_receive(master);
         ecrt_domain_process(domain1);
 
-        /* DC 同步：参考时钟 + 从站时钟 */
+        /* 3. 执行时钟同步 */
         ecrt_master_sync_reference_clock(master);
         ecrt_master_sync_slave_clocks(master);
 
-        /* 将对 domain1_pd 的写入（RxPDO）排队并发送出去 */
+        /* 4. 发送数据 */
         ecrt_domain_queue(domain1);
         ecrt_master_send(master);
     }
@@ -533,6 +598,17 @@ int sync_clocks(int cycles)
     return run ? 0 : -1;
 }
 
+/*
+ * ======================================================================================
+ * 轴预备函数 (CSP 模式切换)
+ * ======================================================================================
+ * 
+ * 功能：
+ * 1. 将伺服控制模式 (Modes of Operation) 切换为 CSP (Cyclic Synchronous Position, Mode 8)。
+ * 2. 将目标位置 (Target Position) 初始化为当前实际位置 (Actual Position)，
+ *    防止使能瞬间因位置偏差过大导致飞车或报错。
+ * 3. 等待从站反馈 Modes of Operation Display == 8。
+ */
 static int prepare_axis(slave_data *dev, int axis_id)
 {
     const unsigned int off_target = dev->out.targetPosition;
@@ -857,6 +933,25 @@ int enable_axis(int axis_id)
 
 }
 
+/*
+ * ======================================================================================
+ * 多轴使能函数 (Enable All Axes)
+ * ======================================================================================
+ * 
+ * 功能：
+ * 并行控制所有轴执行 CiA402 状态机切换序列，使其进入 Operation Enabled (可运动) 状态。
+ * 
+ * 状态机流程：
+ * 1. 检查 Fault 状态：若有故障，先写 0x0080 (Fault Reset) 清除故障。
+ * 2. Step 1: Write 0x0006 (Shutdown)       -> Expect Status 0x0021 (Ready to Switch On)
+ * 3. Step 2: Write 0x0007 (Switch On)      -> Expect Status 0x0023 (Switched On)
+ * 4. Step 3: Write 0x000F (Enable Operation)-> Expect Status 0x0027 (Operation Enabled)
+ * 
+ * 并行逻辑：
+ * - 每个轴维护独立的 stage (当前执行到第几步)。
+ * - 在一个大循环中统一收发 PDO，并针对每个轴更新其控制字。
+ * - 当所有轴都完成所有步骤后退出。
+ */
 int enable_all_axes()
 {
     struct AxisEnableCtx {
@@ -865,10 +960,10 @@ int enable_all_axes()
         unsigned int off_control;
         unsigned int off_status;
         unsigned int off_error;
-        int stage;
-        int stage_cycles;
-        int done;
-        int failed;
+        int stage;          // 当前状态机步骤索引 (-1 表示 Fault Reset)
+        int stage_cycles;   // 当前步骤已耗费的周期数
+        int done;           // 是否完成
+        int failed;         // 是否失败
     };
 
     AxisEnableCtx axes[9] = {};
@@ -892,14 +987,15 @@ int enable_all_axes()
         axes[axis_count++] = ctx;
     }
 
+    /* CiA402 状态切换步骤表 */
     struct Step {
         uint16_t control;
         uint16_t status_mask;
         uint16_t status_value;
     } steps[] = {
-        {0x0006, 0x006F, 0x0021},
-        {0x0007, 0x006F, 0x0023},
-        {0x000F, 0x006F, 0x0027},
+        {0x0006, 0x006F, 0x0021}, /* Shutdown -> Ready to Switch On */
+        {0x0007, 0x006F, 0x0023}, /* Switch On -> Switched On */
+        {0x000F, 0x006F, 0x0027}, /* Enable Operation -> Operation Enabled */
     };
 
     const int per_step_timeout_ms = 10000;
@@ -912,8 +1008,16 @@ int enable_all_axes()
     for (int cycle = 0; cycle < total_max_cycles && run; ++cycle) {
         sleep_until(&wakeup_time, CYCLE_US);
 
+        /* 1. 设置应用时间 (DC Sync 必须) */
+        ecrt_master_application_time(master, monotonic_time_ns());
+
+        /* 2. 接收数据 */
         ecrt_master_receive(master);
         ecrt_domain_process(domain1);
+
+        /* 3. 执行时钟同步 */
+        ecrt_master_sync_reference_clock(master);
+        ecrt_master_sync_slave_clocks(master);
 
         int all_done = 1;
         for (int i = 0; i < axis_count; ++i) {
@@ -925,14 +1029,17 @@ int enable_all_axes()
             const uint16_t status = EC_READ_U16(domain1_pd + axes[i].off_status);
             const int fault = (status & 0x0008) != 0;
 
+            /* 若出现故障，强制进入 Fault Reset 阶段 */
             if (fault) {
                 axes[i].stage = -1;
             }
 
+            /* Stage -1: Fault Reset Logic */
             if (axes[i].stage == -1) {
                 EC_WRITE_U16(domain1_pd + axes[i].off_control, 0x0080);
                 axes[i].stage_cycles++;
                 if (!fault) {
+                    /* 故障清除，重置为 Step 0 */
                     axes[i].stage = 0;
                     axes[i].stage_cycles = 0;
                 } else if (axes[i].stage_cycles >= fault_reset_max_cycles) {
@@ -941,12 +1048,14 @@ int enable_all_axes()
                 continue;
             }
 
+            /* Normal Steps */
             const unsigned int s = (unsigned int) axes[i].stage;
             if (s >= (sizeof(steps) / sizeof(steps[0]))) {
                 axes[i].done = 1;
                 continue;
             }
 
+            /* 检查当前状态是否满足目标 */
             if ((status & steps[s].status_mask) == steps[s].status_value) {
                 axes[i].stage++;
                 axes[i].stage_cycles = 0;
@@ -956,6 +1065,7 @@ int enable_all_axes()
                 continue;
             }
 
+            /* 写入当前步骤的控制字 */
             EC_WRITE_U16(domain1_pd + axes[i].off_control, steps[s].control);
             axes[i].stage_cycles++;
             if (axes[i].stage_cycles >= per_step_max_cycles) {
@@ -963,6 +1073,7 @@ int enable_all_axes()
             }
         }
 
+        /* 4. 发送数据 */
         ecrt_domain_queue(domain1);
         ecrt_master_send(master);
 
@@ -970,6 +1081,7 @@ int enable_all_axes()
             return 0;
         }
     }
+
 
     ecrt_master_receive(master);
     ecrt_domain_process(domain1);
@@ -999,40 +1111,300 @@ int enable_all_axes()
     return any_failed ? -1 : 0;
 }
 
+int set_axis_targetpos(int axis_id, int32_t target)
+{
+    slave_data *dev = axis_device(axis_id);
+    if (!dev) {
+        fprintf(stderr, "Invalid axis_id=%d\n", axis_id);
+        return -1;
+    }
+    EC_WRITE_S32(domain1_pd + dev->out.targetPosition, target);
+    ecrt_domain_queue(domain1);
+    ecrt_master_send(master);
+    return 0;
+}
+
+int set_all_axis_targetpos(int32_t target[9])
+{
+    int axis_count = 9;
+    for (int i = 0; i < axis_count; ++i) {
+        slave_data *dev = axis_device(i);
+        if (!dev) {
+            fprintf(stderr, "Invalid axis_id=%d\n", i);
+            return -1;
+        }
+        EC_WRITE_S32(domain1_pd + dev->out.targetPosition, target[i]);
+    }
+    ecrt_domain_queue(domain1);
+    ecrt_master_send(master);
+    return 0;
+}
+
+int set_io_state(int io_id, int port_index, bool state)
+{
+    slave_data *dev = io_device(io_id);
+    if (!dev) {
+        fprintf(stderr, "Invalid io_id=%d\n", io_id);
+        return -1;
+    }
+
+    uint16_t port_state = EC_READ_U16(domain1_pd + dev->io.output_offset);
+    if (state) {
+        port_state |= (1 << port_index);
+    } else {
+        port_state &= ~(1 << port_index);
+    }
+
+    EC_WRITE_U16(domain1_pd + dev->io.output_offset, port_state);
+    ecrt_domain_queue(domain1);
+    ecrt_master_send(master);
+    return 0;
+}
+
+int get_io_state(int io_id, int port_index, bool *state)
+{
+    slave_data *dev = io_device(io_id);
+    if (!dev) {
+        fprintf(stderr, "Invalid io_id=%d\n", io_id);
+        return -1;
+    }
+    uint16_t port_state = EC_READ_U16(domain1_pd + dev->io.output_offset);
+    *state = (port_state & (1 << port_index)) != 0;
+    return 0;
+}
+/*
+ * 处理伺服运动逻辑并发送数据
+ */
+void process_servo_control()
+{
+    /* 处理键盘输入，更新目标位置 */
+    const int selected_axis = g_selected_axis.load();
+    const int axis_dir = g_axis_dir.load();
+    if (selected_axis >= 1 && selected_axis <= 9 && axis_dir != 0) {
+        cmd_frac[selected_axis] += (double) axis_dir * inc_per_cycle;
+        const int32_t delta = (int32_t) cmd_frac[selected_axis];
+        if (delta != 0) {
+            cmd_target[selected_axis] += delta;
+            cmd_frac[selected_axis] -= (double) delta;
+        }
+    }
+
+    /* 写入 PDO (Process Data Objects) */
+    for (int axis_id = 1; axis_id <= 9; ++axis_id) {
+        slave_data *dev = axis_device(axis_id);
+        if (!dev) {
+            run = 0;
+            break;
+        }
+        EC_WRITE_S32(domain1_pd + dev->out.targetPosition, cmd_target[axis_id]);
+        /* 持续刷新 ControlWord = 0x000F (Operation Enabled) 以防心跳超时 */
+        EC_WRITE_U16(domain1_pd + dev->out.controlWord, 0x000F);
+    }
+    
+    ecrt_domain_queue(domain1);
+    ecrt_master_send(master);
+}
+
+/*
+ * 处理IO逻辑并发送数据
+ */
+void process_io_control()
+{
+    static int cycle_counter = 0;
+    static int pattern_step = 0;
+    /* 
+     * 每秒更新一次 IO 状态 (CYCLE_US = 8000us)
+     * 1000000 / 8000 = 125 cycles
+     */
+    if (++cycle_counter >= (1000000 / CYCLE_US)) {
+        cycle_counter = 0;
+        
+        if (pattern_step < 16) {
+            /* 0-15: 逐个点亮 (Accumulate) */
+            set_io_state(1, pattern_step, SETUP);
+        } else {
+            /* 16-31: 逐个熄灭 (Clear one by one, FIFO order) */
+            set_io_state(1, pattern_step - 16, SETDOWN);
+        }
+        
+        pattern_step++;
+        if (pattern_step >= 32) {
+            pattern_step = 0;
+        }
+    }
+}
+
+int set_adc_value(int io_id, int channel, uint16_t value)
+{
+    slave_data *dev = io_device(io_id);
+    if (!dev) {
+        fprintf(stderr, "Invalid io_id=%d\n", io_id);
+        return -1;
+    }
+    if (channel < 0 || channel >= 2) {
+        return -1;
+    }
+    EC_WRITE_U16(domain1_pd + dev->io.dac_output_ch[channel], value);
+    ecrt_domain_queue(domain1);
+    ecrt_master_send(master);
+    return 0;
+}
+
+int get_adc_value(int io_id, int channel, uint16_t *value)
+{
+    slave_data *dev = io_device(io_id);
+    if (!dev) {
+        fprintf(stderr, "Invalid io_id=%d\n", io_id);
+        return -1;
+    }
+    if (channel < 0 || channel >= 2) {
+        return -1;
+    }
+    *value = EC_READ_U16(domain1_pd + dev->io.dac_output_ch[channel]);
+    return 0;
+}
+
+int get_input_state(int io_id, int port_index, bool *state)
+{
+    slave_data *dev = io_device(io_id);
+    if (!dev) {
+        fprintf(stderr, "Invalid io_id=%d\n", io_id);
+        return -1;
+    }
+    uint16_t port_state = EC_READ_U16(domain1_pd + dev->io.input_offset);
+    *state = (port_state & (1 << port_index)) != 0;
+    return 0;
+}
+
+int get_adc_input_value(int io_id, int channel, uint16_t *value)
+{
+    slave_data *dev = io_device(io_id);
+    if (!dev) {
+        fprintf(stderr, "Invalid io_id=%d\n", io_id);
+        return -1;
+    }
+    if (channel < 0 || channel >= 2) {
+        return -1;
+    }
+    *value = EC_READ_U16(domain1_pd + dev->io.adc_input_ch[channel]);
+    return 0;
+}
+
+int clear_error(int axis_id)
+{
+    slave_data *dev = axis_device(axis_id);
+    if (!dev) {
+        fprintf(stderr, "Invalid axis_id=%d\n", axis_id);
+        return -1;
+    }
+    EC_WRITE_U16(domain1_pd + dev->out.controlWord, 0x08);
+    ecrt_domain_queue(domain1);
+    ecrt_master_send(master);
+    if (EC_READ_U16(domain1_pd + dev->in.errorCode) != 0x0000) {
+        return -1;
+    }
+    else return 0;
+}
+
+int check_axis_error(int axis_id, uint16_t *error_code)
+{
+    slave_data *dev = axis_device(axis_id);
+    if (!dev) {
+        fprintf(stderr, "Invalid axis_id=%d\n", axis_id);
+        return -1;
+    }
+    *error_code = EC_READ_U16(domain1_pd + dev->in.errorCode);
+     return 0;
+}
+
+void default_task()
+{
+    /* 周期唤醒 */
+    sleep_until(&wakeup_time, CYCLE_US);
+
+    /* 设置 Application Time (DC Sync 核心) */
+    ecrt_master_application_time(master, monotonic_time_ns());
+
+    /* 接收数据 */
+    ecrt_master_receive(master);
+    ecrt_domain_process(domain1);
+
+    /* DC 时钟同步 */
+    ecrt_master_sync_reference_clock(master);
+    ecrt_master_sync_slave_clocks(master);
+
+    ec_master_state_t ms = {};
+    ec_domain_state_t ds = {};
+    ecrt_master_state(master, &ms);
+    ecrt_domain_state(domain1, &ds);
+    print_process_table_if_needed(&ms, &ds);
+}
+
+/*
+ * ======================================================================================
+ * 主函数 (Main Loop)
+ * ======================================================================================
+ * 
+ * 流程：
+ * 1. 初始化 EtherCAT (Request Master -> Configure Slaves -> Activate Master).
+ * 2. 启动键盘监听线程 (Keyboard Thread).
+ * 3. 执行 DC 时钟同步预热 (sync_clocks).
+ * 4. 等待 Domain Working Counter 稳定 (wait_for_domain_wc).
+ * 5. 执行轴预备 (prepare_all_axes): 切换 CSP 模式，对齐目标位置.
+ * 6. 执行轴使能 (enable_all_axes): CiA402 状态机切换至 Operation Enabled.
+ * 7. 进入实时控制循环 (Real-time Control Loop):
+ *    - 周期性唤醒 (sleep_until)
+ *    - DC 时钟同步 (Application Time + Sync Clocks)
+ *    - 数据交换 (Receive -> Process -> Queue -> Send)
+ *    - 业务逻辑 (根据键盘输入更新目标位置)
+ */
 int main(int argc, char **argv)
 {
     (void) argc;
     (void) argv;
     signal(SIGINT, signal_handler);
     signal(SIGTERM, signal_handler);
+
+    /* 1. 初始化 EtherCAT */
     init_ethercat();
     clock_gettime(CLOCK_MONOTONIC, &wakeup_time);
 
+    /* 2. 启动键盘监听线程 */
     pthread_t keyboard_thread;
-    if (pthread_create(&keyboard_thread, NULL, keyboard_thread_main, NULL) != 0) {
+    /* 
+     * 将 run 的地址传给线程，以便线程可以修改它 (run = 0) 来通知主程序退出
+     */
+    if (pthread_create(&keyboard_thread, NULL, keyboard_thread_main, (void*)&run) != 0) {
         fprintf(stderr, "Failed to create keyboard thread.\n");
         run = 0;
         return -1;
     }
 
+    /* 3. DC 时钟同步预热 (500 cycles) */
     if (sync_clocks(500) != 0) {
         fprintf(stderr, "Clock sync failed.\n");
         run = 0;
         pthread_join(keyboard_thread, NULL);
         return -1;
     }
+
+    /* 4. 等待从站通信链路稳定 */
     if (wait_for_domain_wc(24, 50, 60000) != 0) {
         fprintf(stderr, "Domain wc not ready.\n");
         run = 0;
         pthread_join(keyboard_thread, NULL);
         return -1;
     }
+
+    /* 5. 轴预备 (切换 CSP 模式) */
     if (prepare_all_axes() != 0) {
         fprintf(stderr, "Prepare axes failed.\n");
         run = 0;
         pthread_join(keyboard_thread, NULL);
         return -1;
     }
+
+    /* 6. 轴使能 (CiA402 State Machine) */
     if (enable_all_axes() != 0) {
         fprintf(stderr, "Enable axes failed.\n");
         run = 0;
@@ -1040,8 +1412,9 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    int32_t cmd_target[10] = {};
-    double cmd_frac[10] = {};
+    /* 初始化命令位置 (cmd_target) 为当前实际位置，避免跳变 */
+    // int32_t cmd_target[10] = {};  // Now global
+    // double cmd_frac[10] = {};     // Now global
     for (int axis_id = 1; axis_id <= 9; ++axis_id) {
         slave_data *dev = axis_device(axis_id);
         if (!dev) {
@@ -1057,59 +1430,26 @@ int main(int argc, char **argv)
     ecrt_domain_queue(domain1);
     ecrt_master_send(master);
 
+    /* 运动参数计算 (17-bit Encoder, 30 deg/sec) */
     const double counts_per_rev = 131072.0;
     const double deg_per_sec = 30.0;
     const double counts_per_sec = counts_per_rev * (deg_per_sec / 360.0);
     const double dt_sec = (double) CYCLE_US / 1000000.0;
-    const double inc_per_cycle = counts_per_sec * dt_sec;
+    inc_per_cycle = counts_per_sec * dt_sec; // Update global
 
+    /* 
+     * 7. 实时控制循环 
+     * 必须保证循环周期稳定 (jitter 尽可能小)，否则会影响 DC 同步性能。
+     */
+    int cycle = 0;
+    bool io_state = 0;
     while (run) {
-        sleep_until(&wakeup_time, CYCLE_US);
+        default_task();
 
-        /* 收包 + 解析 TxPDO */
-        ecrt_master_receive(master);
-        ecrt_domain_process(domain1);
 
-        ec_master_state_t ms = {};
-        ec_domain_state_t ds = {};
-        ecrt_master_state(master, &ms);
-        ecrt_domain_state(domain1, &ds);
-        print_process_table_if_needed(&ms, &ds);
-
-        const int selected_axis = g_selected_axis.load();
-        const int axis_dir = g_axis_dir.load();
-        if (selected_axis >= 1 && selected_axis <= 9 && axis_dir != 0) {
-            cmd_frac[selected_axis] += (double) axis_dir * inc_per_cycle;
-            const int32_t delta = (int32_t) cmd_frac[selected_axis];
-            if (delta != 0) {
-                cmd_target[selected_axis] += delta;
-                cmd_frac[selected_axis] -= (double) delta;
-            }
-        }
-
-        for (int axis_id = 1; axis_id <= 9; ++axis_id) {
-            slave_data *dev = axis_device(axis_id);
-            if (!dev) {
-                run = 0;
-                break;
-            }
-            EC_WRITE_S32(domain1_pd + dev->out.targetPosition, cmd_target[axis_id]);
-        }
-
-        /* 示例：写 IO 输出（RxPDO） */
-        EC_WRITE_U16(domain1_pd + device_io.io.output_offset, 0xffff);//OUTPUT_1~16
-        EC_WRITE_U16(domain1_pd + device_io.io.adc_output_ch[0], 0x07ff);//AD_OUTPUT_1
-        EC_WRITE_U16(domain1_pd + device_io.io.adc_output_ch[1], 0x0fff);//AD_OUTPUT_2
-        
-
-        //printf("input_val_6: 0x%04X (%.2fV)\n", input_val_6, (float)input_val_6/0x0FFF*10.0);//AD_INPUT_1
-        //printf("input_val_7: 0x%04X (%.2fV)\n", input_val_7, (float)input_val_7/0x0FFF*10.0);//AD_INPUT_2
-        //printf("input_val_8: 0x%08X\n", input_val_8);//ACTUAL_POSITION_1
-        /* 将 RxPDO 写入排队并发送出去 */
-        /* 将 RxPDO 写入排队并发送出去 */
-        //printf("wakeup_time: %ld.%09ld\n", wakeup_time.tv_sec, wakeup_time.tv_nsec);
-        ecrt_domain_queue(domain1);
-        ecrt_master_send(master);
+        /* 分别调用子模块处理并发送数据 */
+        process_servo_control();
+        process_io_control();
     }
     printf("Releasing master...\n");
     run = 0;

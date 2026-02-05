@@ -53,6 +53,49 @@ extern "C" {
 
 #define SLAVE_COUNT 8
 
+#define INEXBOT_IO_R4_ID 1
+#define F2838x_DEVICE_ID 2
+
+#define SETUP 1
+#define SETDOWN 0
+
+/*
+ * ======================================================================================
+ * 全局变量定义
+ * ======================================================================================
+ */
+
+/* EtherCAT 主站实例指针 */
+extern ec_master_t *master;
+
+/* EtherCAT 域 (Domain) 指针
+ * Domain 用于管理一组 PDO 的数据交换。本例中使用一个 Domain (domain1) 管理所有从站的 PDO。
+ */
+extern ec_domain_t *domain1;
+
+/* 
+ * 域数据指针 (Process Data Pointer)
+ * 指向 Domain 映射的内存区域。读写 PDO 数据时，通过 offset 偏移量在此内存区域操作。
+ * 例如：EC_READ_U16(domain1_pd + offset)
+ */
+extern uint8_t *domain1_pd;
+
+/* 
+ * 周期唤醒时间点
+ * 用于 sleep_until 函数，确保主循环以精确的周期运行。
+ */
+extern struct timespec wakeup_time;
+
+/* 从站配置对象数组 */
+//static ec_slave_config_t *slave_configs[SLAVE_COUNT] = {};
+/* 从站物理位置数组（别名/位置） */
+//static unsigned int slave_positions[SLAVE_COUNT] = {};
+/* 实际配置的从站数量 */
+//static unsigned int slave_count = 0;
+
+/* 运行标志位，用于信号处理和退出循环 */
+//static volatile int run = 1;
+
 typedef struct {
     bool active;
     uint16_t slave_idx;     // Physical slave index
@@ -104,7 +147,7 @@ typedef struct {
     struct {
         unsigned int output_offset; // RxPDO offset
         unsigned int input_offset;  // TxPDO offset
-        unsigned int adc_output_ch[2];
+        unsigned int dac_output_ch[2];
         unsigned int adc_input_ch[2];
         uint8_t size_out;           // bytes
         uint8_t size_in;            // bytes
@@ -117,8 +160,8 @@ static slave_data device_io, device_hcfa_servo[3], device_hans_robot[3][2], devi
 
 const static ec_pdo_entry_reg_t domain1_regs[] = {
         {BusAlias,ETHERCAT_SLAVE_0_INEXBOT_IO_R4_POS,INEXBOT_IO_R4_VENDOR_ID,INEXBOT_IO_R4_PRODUCT_CODE,0X7000,6,&device_io.io.output_offset},
-        {BusAlias,ETHERCAT_SLAVE_0_INEXBOT_IO_R4_POS,INEXBOT_IO_R4_VENDOR_ID,INEXBOT_IO_R4_PRODUCT_CODE,0X7000,7,&device_io.io.adc_output_ch[0]},
-        {BusAlias,ETHERCAT_SLAVE_0_INEXBOT_IO_R4_POS,INEXBOT_IO_R4_VENDOR_ID,INEXBOT_IO_R4_PRODUCT_CODE,0X7000,8,&device_io.io.adc_output_ch[1]},
+        {BusAlias,ETHERCAT_SLAVE_0_INEXBOT_IO_R4_POS,INEXBOT_IO_R4_VENDOR_ID,INEXBOT_IO_R4_PRODUCT_CODE,0X7000,7,&device_io.io.dac_output_ch[0]},
+        {BusAlias,ETHERCAT_SLAVE_0_INEXBOT_IO_R4_POS,INEXBOT_IO_R4_VENDOR_ID,INEXBOT_IO_R4_PRODUCT_CODE,0X7000,8,&device_io.io.dac_output_ch[1]},
         {BusAlias,ETHERCAT_SLAVE_0_INEXBOT_IO_R4_POS,INEXBOT_IO_R4_VENDOR_ID,INEXBOT_IO_R4_PRODUCT_CODE,0X6005,0,&device_io.io.input_offset},
         {BusAlias,ETHERCAT_SLAVE_0_INEXBOT_IO_R4_POS,INEXBOT_IO_R4_VENDOR_ID,INEXBOT_IO_R4_PRODUCT_CODE,0X6006,0,&device_io.io.adc_input_ch[0]},
         {BusAlias,ETHERCAT_SLAVE_0_INEXBOT_IO_R4_POS,INEXBOT_IO_R4_VENDOR_ID,INEXBOT_IO_R4_PRODUCT_CODE,0X6007,0,&device_io.io.adc_input_ch[1]},
@@ -241,8 +284,8 @@ const static ec_pdo_entry_reg_t domain1_regs[] = {
         {BusAlias,ETHERCAT_SLAVE_6_HANS_ROBOT_POS,HANS_ROBOT_VENDOR_ID,HANS_ROBOT_PRODUCT_CODE,0X6964,0,&device_hans_robot[2][1].in.multiPositionActualValue},
 
         {BusAlias,ETHERCAT_SLAVE_7_F2838x_POS,F2838x_VENDOR_ID,F2838x_PRODUCT_CODE,0X7001,1,&device_f2838x.io.output_offset},
-        {BusAlias,ETHERCAT_SLAVE_7_F2838x_POS,F2838x_VENDOR_ID,F2838x_PRODUCT_CODE,0X7002,1,&device_f2838x.io.adc_output_ch[0]},
-        {BusAlias,ETHERCAT_SLAVE_7_F2838x_POS,F2838x_VENDOR_ID,F2838x_PRODUCT_CODE,0X7003,1,&device_f2838x.io.adc_output_ch[1]},
+        {BusAlias,ETHERCAT_SLAVE_7_F2838x_POS,F2838x_VENDOR_ID,F2838x_PRODUCT_CODE,0X7002,1,&device_f2838x.io.dac_output_ch[0]},
+        {BusAlias,ETHERCAT_SLAVE_7_F2838x_POS,F2838x_VENDOR_ID,F2838x_PRODUCT_CODE,0X7003,1,&device_f2838x.io.dac_output_ch[1]},
         {BusAlias,ETHERCAT_SLAVE_7_F2838x_POS,F2838x_VENDOR_ID,F2838x_PRODUCT_CODE,0X6001,1,&device_f2838x.io.input_offset},
         {BusAlias,ETHERCAT_SLAVE_7_F2838x_POS,F2838x_VENDOR_ID,F2838x_PRODUCT_CODE,0X6002,1,&device_f2838x.io.adc_input_ch[0]},
         {BusAlias,ETHERCAT_SLAVE_7_F2838x_POS,F2838x_VENDOR_ID,F2838x_PRODUCT_CODE,0X6003,1,&device_f2838x.io.adc_input_ch[1]},

@@ -37,6 +37,7 @@ add_custom_target(compile_commands ALL
 
 add_executable(test_all
   src/test_all.cpp
+  src/keyboard_control.cpp
 )
 target_include_directories(test_all PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/include

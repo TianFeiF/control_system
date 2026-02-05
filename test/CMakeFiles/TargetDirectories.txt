@@ -1,0 +1,5 @@
+/home/phi/control_system/test/CMakeFiles/compile_commands.dir
+/home/phi/control_system/test/CMakeFiles/test_all.dir
+/home/phi/control_system/test/CMakeFiles/test_io_raw.dir
+/home/phi/control_system/test/CMakeFiles/edit_cache.dir
+/home/phi/control_system/test/CMakeFiles/rebuild_cache.dir
