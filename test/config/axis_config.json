@@ -1,0 +1,357 @@
+{
+  "system_description": "Motion Control Axis Configuration",
+  "version": "1.0",
+  "axes": [
+    {
+      "axis_id": 1,
+      "name": "X_Axis_Gantry_Master",
+      "description": "X轴龙门主轴",
+      "mechanical": {
+        "encoder_resolution_bits": 17,
+        "encoder_type": "absolute",
+        "gear_ratio": 15.12,
+        "screw_pitch_mm": 1.0,
+        "unit_per_rev": 1.0,
+        "rotation_direction": 1
+      },
+      "kinematics": {
+        "max_velocity_units": 2520.0,
+        "max_acceleration_units": 7560.0,
+        "max_deceleration_units": 7560.0,
+        "max_jerk_units": 10000.0,
+        "default_velocity_units": 1000.0
+      },
+      "limits": {
+        "soft_limit_pos_units": 6500.0,
+        "soft_limit_neg_units": -20.0,
+        "max_position_error_units": 0.5,
+        "max_current_amp": 5.0
+      },
+      "homing": {
+        "method": 33,
+        "speed_fast_units": 50.0,
+        "speed_slow_units": 5.0,
+        "offset_units": 0.0,
+        "current_threshold_amp": 1.5
+      },
+      "synchronization": {
+        "is_synced": true,
+        "sync_master_axis_id": -1,
+        "sync_type": "master",
+        "sync_direction": 1
+      }
+    },
+    {
+      "axis_id": 2,
+      "name": "X_Axis_Gantry_Slave",
+      "description": "X轴龙门从轴 (与轴1同步)",
+      "mechanical": {
+        "encoder_resolution_bits": 23,
+        "encoder_type": "absolute",
+        "gear_ratio": 15.12,
+        "screw_pitch_mm": 1.0,
+        "unit_per_rev": 1.0,
+        "rotation_direction": -1
+      },
+      "kinematics": {
+        "max_velocity_units": 2520.0,
+        "max_acceleration_units": 7560.0,
+        "max_deceleration_units": 7560.0,
+        "max_jerk_units": 10000.0,
+        "default_velocity_units": 1000.0
+      },
+      "limits": {
+        "soft_limit_pos_units": 6500.0,
+        "soft_limit_neg_units": -20.0,
+        "max_position_error_units": 0.5,
+        "max_current_amp": 5.0
+      },
+      "homing": {
+        "method": 33,
+        "speed_fast_units": 50.0,
+        "speed_slow_units": 5.0,
+        "offset_units": 0.0,
+        "current_threshold_amp": 1.5
+      },
+      "synchronization": {
+        "is_synced": true,
+        "sync_master_axis_id": 1,
+        "sync_type": "slave",
+        "sync_direction": 1
+      }
+    },
+    {
+      "axis_id": 3,
+      "name": "Y_Axis",
+      "description": "Y轴独立运动",
+      "mechanical": {
+        "encoder_resolution_bits": 17,
+        "encoder_type": "absolute",
+        "gear_ratio": 15.12,
+        "screw_pitch_mm": 1.0,
+        "unit_per_rev": 1.0,
+        "rotation_direction": 1
+      },
+      "kinematics": {
+        "max_velocity_units": 2520.0,
+        "max_acceleration_units": 7560.0,
+        "max_deceleration_units": 7560.0,
+        "max_jerk_units": 10000.0,
+        "default_velocity_units": 1000.0
+      },
+      "limits": {
+        "soft_limit_pos_units": 2860.0,
+        "soft_limit_neg_units": -20.0,
+        "max_position_error_units": 0.5,
+        "max_current_amp": 5.0
+      },
+      "homing": {
+        "method": 33,
+        "speed_fast_units": 50.0,
+        "speed_slow_units": 5.0,
+        "offset_units": 0.0,
+        "current_threshold_amp": 1.5
+      },
+      "synchronization": {
+        "is_synced": true,
+        "sync_master_axis_id": 2,
+        "sync_type": "slave",
+        "sync_direction": -1
+      }
+    },
+    {
+      "axis_id": 4,
+      "name": "ARM_Axis_1",
+      "description": "Hans_axsi_1",
+      "mechanical": {
+        "encoder_resolution_bits": 17,
+        "encoder_type": "absolute",
+        "gear_ratio": 121.0,
+        "screw_pitch_mm": 1.0,
+        "unit_per_rev": 360.0,
+        "rotation_direction": 1
+      },
+      "kinematics": {
+        "max_velocity_units": 2420.0,
+        "max_acceleration_units": 7260.0,
+        "max_deceleration_units": 7260.0,
+        "max_jerk_units": 10000.0,
+        "default_velocity_units": 120.0
+      },
+      "limits": {
+        "soft_limit_pos_units": 360.0,
+        "soft_limit_neg_units": -360.0,
+        "max_position_error_units": 0.5,
+        "max_current_amp": 5.0
+      },
+      "homing": {
+        "method": 33,
+        "speed_fast_units": 50.0,
+        "speed_slow_units": 5.0,
+        "offset_units": 0.0,
+        "current_threshold_amp": 1.5
+      },
+      "synchronization": {
+        "is_synced": false,
+        "sync_master_axis_id": -1,
+        "sync_type": "none",
+        "sync_direction": 1
+      }
+    },
+    {
+      "axis_id": 5,
+      "name": "ARM_Axis_2",
+      "description": "Hans_axsi_2",
+      "mechanical": {
+        "encoder_resolution_bits": 17,
+        "encoder_type": "absolute",
+        "gear_ratio": 120.995,
+        "screw_pitch_mm": 1.0,
+        "unit_per_rev": 360.0,
+        "rotation_direction": 1
+      },
+      "kinematics": {
+        "max_velocity_units": 2420.0,
+        "max_acceleration_units": 7260.0,
+        "max_deceleration_units": 7260.0,
+        "max_jerk_units": 10000.0,
+        "default_velocity_units": 120.0
+      },
+      "limits": {
+        "soft_limit_pos_units": 135.0,
+        "soft_limit_neg_units": -135.0,
+        "max_position_error_units": 0.5,
+        "max_current_amp": 5.0
+      },
+      "homing": {
+        "method": 33,
+        "speed_fast_units": 50.0,
+        "speed_slow_units": 5.0,
+        "offset_units": 0.0,
+        "current_threshold_amp": 1.5
+      },
+      "synchronization": {
+        "is_synced": false,
+        "sync_master_axis_id": -1,
+        "sync_type": "none",
+        "sync_direction": 1
+      }
+    },
+    {
+      "axis_id": 6,
+      "name": "ARM_Axis_3",
+      "description": "Hans_axsi_3",
+      "mechanical": {
+        "encoder_resolution_bits": 17,
+        "encoder_type": "absolute",
+        "gear_ratio": 100.997,
+        "screw_pitch_mm": 1.0,
+        "unit_per_rev": 360.0,
+        "rotation_direction": 1
+      },
+      "kinematics": {
+        "max_velocity_units": 2794.0,
+        "max_acceleration_units": 7260.0,
+        "max_deceleration_units": 7260.0,
+        "max_jerk_units": 10000.0,
+        "default_velocity_units": 165.99
+      },
+      "limits": {
+        "soft_limit_pos_units": 243.0,
+        "soft_limit_neg_units": -63.0,
+        "max_position_error_units": 0.5,
+        "max_current_amp": 5.0
+      },
+      "homing": {
+        "method": 33,
+        "speed_fast_units": 50.0,
+        "speed_slow_units": 5.0,
+        "offset_units": 0.0,
+        "current_threshold_amp": 1.5
+      },
+      "synchronization": {
+        "is_synced": false,
+        "sync_master_axis_id": -1,
+        "sync_type": "none",
+        "sync_direction": 1
+      }
+    },
+    {
+      "axis_id": 7,
+      "name": "ARM_Axis_4",
+      "description": "Hans_axsi_4",
+      "mechanical": {
+        "encoder_resolution_bits": 17,
+        "encoder_type": "absolute",
+        "gear_ratio": 101.002,
+        "screw_pitch_mm": 1.0,
+        "unit_per_rev": 360.0,
+        "rotation_direction": 1
+      },
+      "kinematics": {
+        "max_velocity_units": 2796.0,
+        "max_acceleration_units": 7560.0,
+        "max_deceleration_units": 7560.0,
+        "max_jerk_units": 10000.0,
+        "default_velocity_units": 166.1
+      },
+      "limits": {
+        "soft_limit_pos_units": 360.0,
+        "soft_limit_neg_units": -360.0,
+        "max_position_error_units": 0.5,
+        "max_current_amp": 5.0
+      },
+      "homing": {
+        "method": 33,
+        "speed_fast_units": 50.0,
+        "speed_slow_units": 5.0,
+        "offset_units": 0.0,
+        "current_threshold_amp": 1.5
+      },
+      "synchronization": {
+        "is_synced": false,
+        "sync_master_axis_id": -1,
+        "sync_type": "none",
+        "sync_direction": 1
+      }
+    },
+    {
+      "axis_id": 8,
+      "name": "ARM_Axis_5",
+      "description": "Hans_axsi_5",
+      "mechanical": {
+        "encoder_resolution_bits": 17,
+        "encoder_type": "absolute",
+        "gear_ratio": 101.002,
+        "screw_pitch_mm": 1.0,
+        "unit_per_rev": 360.0,
+        "rotation_direction": 1
+      },
+      "kinematics": {
+        "max_velocity_units": 2796.0,
+        "max_acceleration_units": 7560.0,
+        "max_deceleration_units": 7560.0,
+        "max_jerk_units": 10000.0,
+        "default_velocity_units": 166.1
+      },
+      "limits": {
+        "soft_limit_pos_units": 360.0,
+        "soft_limit_neg_units": -360.0,
+        "max_position_error_units": 0.5,
+        "max_current_amp": 5.0
+      },
+      "homing": {
+        "method": 33,
+        "speed_fast_units": 50.0,
+        "speed_slow_units": 5.0,
+        "offset_units": 0.0,
+        "current_threshold_amp": 1.5
+      },
+      "synchronization": {
+        "is_synced": false,
+        "sync_master_axis_id": -1,
+        "sync_type": "none",
+        "sync_direction": 1
+      }
+    },
+    {
+      "axis_id": 9,
+      "name": "ARM_Axis_6",
+      "description": "Hans_axsi_6",
+      "mechanical": {
+        "encoder_resolution_bits": 17,
+        "encoder_type": "absolute",
+        "gear_ratio": 100.997,
+        "screw_pitch_mm": 1.0,
+        "unit_per_rev": 360.0,
+        "rotation_direction": 1
+      },
+      "kinematics": {
+        "max_velocity_units": 3029.0,
+        "max_acceleration_units": 7560.0,
+        "max_deceleration_units": 7560.0,
+        "max_jerk_units": 10000.0,
+        "default_velocity_units": 179.95
+      },
+      "limits": {
+        "soft_limit_pos_units": 360.0,
+        "soft_limit_neg_units": -360.0,
+        "max_position_error_units": 0.5,
+        "max_current_amp": 5.0
+      },
+      "homing": {
+        "method": 33,
+        "speed_fast_units": 50.0,
+        "speed_slow_units": 5.0,
+        "offset_units": 0.0,
+        "current_threshold_amp": 1.5
+      },
+      "synchronization": {
+        "is_synced": false,
+        "sync_master_axis_id": -1,
+        "sync_type": "none",
+        "sync_direction": 1
+      }
+    }
+  ]
+}

@@ -111,12 +111,12 @@ CMakeFiles/compile_commands.dir/clean:
 CMakeFiles/test_all.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_all.dir/build.make CMakeFiles/test_all.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_all.dir/build.make CMakeFiles/test_all.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/phi/control_system/test/CMakeFiles --progress-num=1,2,3 "Built target test_all"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/phi/control_system/test/CMakeFiles --progress-num=1,2,3,4 "Built target test_all"
 .PHONY : CMakeFiles/test_all.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/test_all.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/phi/control_system/test/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/phi/control_system/test/CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_all.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/phi/control_system/test/CMakeFiles 0
 .PHONY : CMakeFiles/test_all.dir/rule
@@ -137,7 +137,7 @@ CMakeFiles/test_all.dir/clean:
 CMakeFiles/test_io_raw.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_io_raw.dir/build.make CMakeFiles/test_io_raw.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_io_raw.dir/build.make CMakeFiles/test_io_raw.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/phi/control_system/test/CMakeFiles --progress-num=4,5 "Built target test_io_raw"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/phi/control_system/test/CMakeFiles --progress-num=5,6 "Built target test_io_raw"
 .PHONY : CMakeFiles/test_io_raw.dir/all
 
 # Build rule for subdir invocation for target.

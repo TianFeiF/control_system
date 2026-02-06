@@ -1,13 +1,28 @@
 [
 {
   "directory": "/home/phi/control_system/test/build",
-  "command": "/usr/bin/c++  -I/home/phi/control_system/test/include -O3 -DNDEBUG -std=c++17 -o CMakeFiles/test_all.dir/src/test_all.cpp.o -c /home/phi/control_system/test/src/test_all.cpp",
+  "command": "/usr/bin/c++  -I/home/phi/control_system/test/include -I/home/phi/control_system/test/include/nlohmann -O3 -DNDEBUG -std=c++17 -o CMakeFiles/test_all.dir/src/test_all.cpp.o -c /home/phi/control_system/test/src/test_all.cpp",
   "file": "/home/phi/control_system/test/src/test_all.cpp"
 },
 {
   "directory": "/home/phi/control_system/test/build",
-  "command": "/usr/bin/c++  -I/home/phi/control_system/test/include -O3 -DNDEBUG -std=c++17 -o CMakeFiles/test_all.dir/src/keyboard_control.cpp.o -c /home/phi/control_system/test/src/keyboard_control.cpp",
+  "command": "/usr/bin/c++  -I/home/phi/control_system/test/include -I/home/phi/control_system/test/include/nlohmann -O3 -DNDEBUG -std=c++17 -o CMakeFiles/test_all.dir/src/keyboard_control.cpp.o -c /home/phi/control_system/test/src/keyboard_control.cpp",
   "file": "/home/phi/control_system/test/src/keyboard_control.cpp"
+},
+{
+  "directory": "/home/phi/control_system/test/build",
+  "command": "/usr/bin/c++  -I/home/phi/control_system/test/include -I/home/phi/control_system/test/include/nlohmann -O3 -DNDEBUG -std=c++17 -o CMakeFiles/test_all.dir/src/parse.cpp.o -c /home/phi/control_system/test/src/parse.cpp",
+  "file": "/home/phi/control_system/test/src/parse.cpp"
+},
+{
+  "directory": "/home/phi/control_system/test/build",
+  "command": "/usr/bin/c++  -I/home/phi/control_system/test/include -I/home/phi/control_system/test/include/nlohmann -O3 -DNDEBUG -std=c++17 -o CMakeFiles/test_all.dir/src/ec_defs.cpp.o -c /home/phi/control_system/test/src/ec_defs.cpp",
+  "file": "/home/phi/control_system/test/src/ec_defs.cpp"
+},
+{
+  "directory": "/home/phi/control_system/test/build",
+  "command": "/usr/bin/c++  -I/home/phi/control_system/test/include -I/home/phi/control_system/test/include/nlohmann -O3 -DNDEBUG -std=c++17 -o CMakeFiles/test_all.dir/src/globals.cpp.o -c /home/phi/control_system/test/src/globals.cpp",
+  "file": "/home/phi/control_system/test/src/globals.cpp"
 },
 {
   "directory": "/home/phi/control_system/test/build",

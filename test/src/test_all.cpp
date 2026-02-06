@@ -29,26 +29,7 @@
  * ======================================================================================
  */
 
-/* EtherCAT 主站实例指针 */
-ec_master_t *master = NULL;
-
-/* EtherCAT 域 (Domain) 指针
- * Domain 用于管理一组 PDO 的数据交换。本例中使用一个 Domain (domain1) 管理所有从站的 PDO。
- */
-ec_domain_t *domain1 = NULL;
-
-/* 
- * 域数据指针 (Process Data Pointer)
- * 指向 Domain 映射的内存区域。读写 PDO 数据时，通过 offset 偏移量在此内存区域操作。
- * 例如：EC_READ_U16(domain1_pd + offset)
- */
-uint8_t *domain1_pd = NULL;
-
-/* 
- * 周期唤醒时间点
- * 用于 sleep_until 函数，确保主循环以精确的周期运行。
- */
-struct timespec wakeup_time;
+// Definitions moved to globals.cpp
 
 /* 从站配置对象数组 */
 static ec_slave_config_t *slave_configs[SLAVE_COUNT] = {};
@@ -74,7 +55,6 @@ static void print_process_table_if_needed(const ec_master_state_t *ms, const ec_
  * 辅助函数
  * ======================================================================================
  */
-
 
 static void print_master_domain_state(const char *tag)
 {
@@ -1124,7 +1104,7 @@ int set_axis_targetpos(int axis_id, int32_t target)
     return 0;
 }
 
-int set_all_axis_targetpos(int32_t target[9])
+int set_all_axis_targetpos(int32_t cmd_target[9])
 {
     int axis_count = 9;
     for (int i = 0; i < axis_count; ++i) {
@@ -1133,7 +1113,7 @@ int set_all_axis_targetpos(int32_t target[9])
             fprintf(stderr, "Invalid axis_id=%d\n", i);
             return -1;
         }
-        EC_WRITE_S32(domain1_pd + dev->out.targetPosition, target[i]);
+        EC_WRITE_S32(domain1_pd + dev->out.targetPosition, cmd_target[i]);
     }
     ecrt_domain_queue(domain1);
     ecrt_master_send(master);
@@ -1181,11 +1161,38 @@ void process_servo_control()
     const int selected_axis = g_selected_axis.load();
     const int axis_dir = g_axis_dir.load();
     if (selected_axis >= 1 && selected_axis <= 9 && axis_dir != 0) {
-        cmd_frac[selected_axis] += (double) axis_dir * inc_per_cycle;
-        const int32_t delta = (int32_t) cmd_frac[selected_axis];
-        if (delta != 0) {
-            cmd_target[selected_axis] += delta;
-            cmd_frac[selected_axis] -= (double) delta;
+        /* 计算增量 */
+        const double delta_frac = (double) axis_dir * inc_per_cycle;
+        
+        /* 
+         * 轴1、2同步逻辑：
+         * 如果选中轴1或轴2，则两者联动，且方向相反。
+         * 逻辑：轴1正向时，轴2负向；轴1负向时，轴2正向。
+         */
+        if (selected_axis == 1 || selected_axis == 2) {
+            /* 轴1：遵循键盘方向 */
+            cmd_frac[1] += delta_frac;
+            const int32_t delta_1 = (int32_t) cmd_frac[1];
+            if (delta_1 != 0) {
+                cmd_target[1] += delta_1;
+                cmd_frac[1] -= (double) delta_1;
+            }
+
+            /* 轴2：方向取反 */
+            cmd_frac[2] -= delta_frac; 
+            const int32_t delta_2 = (int32_t) cmd_frac[2];
+            if (delta_2 != 0) {
+                cmd_target[2] += delta_2;
+                cmd_frac[2] -= (double) delta_2;
+            }
+        } else {
+            /* 其他轴正常控制 */
+            cmd_frac[selected_axis] += delta_frac;
+            const int32_t delta = (int32_t) cmd_frac[selected_axis];
+            if (delta != 0) {
+                cmd_target[selected_axis] += delta;
+                cmd_frac[selected_axis] -= (double) delta;
+            }
         }
     }
 
@@ -1371,6 +1378,13 @@ int main(int argc, char **argv)
 
     /* 2. 启动键盘监听线程 */
     pthread_t keyboard_thread;
+    
+    /* 运动参数计算 (17-bit Encoder, 30 deg/sec) */
+    const double counts_per_rev = 131072.0;
+    const double deg_per_sec = 30.0;
+    const double counts_per_sec = counts_per_rev * (deg_per_sec / 360.0);
+    const double dt_sec = (double) CYCLE_US / 1000000.0;
+    
     /* 
      * 将 run 的地址传给线程，以便线程可以修改它 (run = 0) 来通知主程序退出
      */
@@ -1380,74 +1394,52 @@ int main(int argc, char **argv)
         return -1;
     }
 
+    inc_per_cycle = counts_per_sec * dt_sec; // Update global
+
     /* 3. DC 时钟同步预热 (500 cycles) */
     if (sync_clocks(500) != 0) {
         fprintf(stderr, "Clock sync failed.\n");
-        run = 0;
-        pthread_join(keyboard_thread, NULL);
-        return -1;
+        goto exit_cleanup;
     }
 
     /* 4. 等待从站通信链路稳定 */
     if (wait_for_domain_wc(24, 50, 60000) != 0) {
         fprintf(stderr, "Domain wc not ready.\n");
-        run = 0;
-        pthread_join(keyboard_thread, NULL);
-        return -1;
+        goto exit_cleanup;
     }
 
     /* 5. 轴预备 (切换 CSP 模式) */
     if (prepare_all_axes() != 0) {
         fprintf(stderr, "Prepare axes failed.\n");
-        run = 0;
-        pthread_join(keyboard_thread, NULL);
-        return -1;
+        goto exit_cleanup;
     }
 
     /* 6. 轴使能 (CiA402 State Machine) */
     if (enable_all_axes() != 0) {
         fprintf(stderr, "Enable axes failed.\n");
-        run = 0;
-        pthread_join(keyboard_thread, NULL);
-        return -1;
+        goto exit_cleanup;
     }
 
     /* 初始化命令位置 (cmd_target) 为当前实际位置，避免跳变 */
-    // int32_t cmd_target[10] = {};  // Now global
-    // double cmd_frac[10] = {};     // Now global
     for (int axis_id = 1; axis_id <= 9; ++axis_id) {
         slave_data *dev = axis_device(axis_id);
         if (!dev) {
-            run = 0;
-            pthread_join(keyboard_thread, NULL);
-            return -1;
+            goto exit_cleanup;
         }
         const int32_t actual = (int32_t) EC_READ_S32(domain1_pd + dev->in.actualPosition);
         cmd_target[axis_id] = actual;
         cmd_frac[axis_id] = 0.0;
-        EC_WRITE_S32(domain1_pd + dev->out.targetPosition, actual);
+        // EC_WRITE_S32(domain1_pd + dev->out.targetPosition, actual); // Removed redundancy
     }
-    ecrt_domain_queue(domain1);
-    ecrt_master_send(master);
-
-    /* 运动参数计算 (17-bit Encoder, 30 deg/sec) */
-    const double counts_per_rev = 131072.0;
-    const double deg_per_sec = 30.0;
-    const double counts_per_sec = counts_per_rev * (deg_per_sec / 360.0);
-    const double dt_sec = (double) CYCLE_US / 1000000.0;
-    inc_per_cycle = counts_per_sec * dt_sec; // Update global
+    // ecrt_domain_queue(domain1); // Removed redundancy
+    // ecrt_master_send(master);   // Removed redundancy
 
     /* 
      * 7. 实时控制循环 
      * 必须保证循环周期稳定 (jitter 尽可能小)，否则会影响 DC 同步性能。
      */
-    int cycle = 0;
-    bool io_state = 0;
     while (run) {
         default_task();
-
-
-        /* 分别调用子模块处理并发送数据 */
         process_servo_control();
         process_io_control();
     }
@@ -1456,4 +1448,13 @@ int main(int argc, char **argv)
     pthread_join(keyboard_thread, NULL);
     ecrt_release_master(master);
     return 0;
+
+    
+exit_cleanup:
+    run = 0;
+    pthread_join(keyboard_thread, NULL);
+    if (master) {
+        ecrt_release_master(master);
+    }
+    return -1;
 }

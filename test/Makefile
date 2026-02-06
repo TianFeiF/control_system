@@ -179,6 +179,30 @@ src/keyboard_control.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_all.dir/build.make CMakeFiles/test_all.dir/src/keyboard_control.cpp.s
 .PHONY : src/keyboard_control.cpp.s
 
+src/parse.o: src/parse.cpp.o
+.PHONY : src/parse.o
+
+# target to build an object file
+src/parse.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_all.dir/build.make CMakeFiles/test_all.dir/src/parse.cpp.o
+.PHONY : src/parse.cpp.o
+
+src/parse.i: src/parse.cpp.i
+.PHONY : src/parse.i
+
+# target to preprocess a source file
+src/parse.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_all.dir/build.make CMakeFiles/test_all.dir/src/parse.cpp.i
+.PHONY : src/parse.cpp.i
+
+src/parse.s: src/parse.cpp.s
+.PHONY : src/parse.s
+
+# target to generate assembly for a file
+src/parse.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_all.dir/build.make CMakeFiles/test_all.dir/src/parse.cpp.s
+.PHONY : src/parse.cpp.s
+
 src/test_all.o: src/test_all.cpp.o
 .PHONY : src/test_all.o
 
@@ -241,6 +265,9 @@ help:
 	@echo "... src/keyboard_control.o"
 	@echo "... src/keyboard_control.i"
 	@echo "... src/keyboard_control.s"
+	@echo "... src/parse.o"
+	@echo "... src/parse.i"
+	@echo "... src/parse.s"
 	@echo "... src/test_all.o"
 	@echo "... src/test_all.i"
 	@echo "... src/test_all.s"

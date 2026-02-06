@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/test_all.dir/src/keyboard_control.cpp.o"
   "CMakeFiles/test_all.dir/src/keyboard_control.cpp.o.d"
+  "CMakeFiles/test_all.dir/src/parse.cpp.o"
+  "CMakeFiles/test_all.dir/src/parse.cpp.o.d"
   "CMakeFiles/test_all.dir/src/test_all.cpp.o"
   "CMakeFiles/test_all.dir/src/test_all.cpp.o.d"
   "test_all"

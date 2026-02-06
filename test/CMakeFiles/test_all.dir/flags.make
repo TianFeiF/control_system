@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/phi/control_system/test/include
+CXX_INCLUDES = -I/home/phi/control_system/test/include -I/home/phi/control_system/test/include/nlohmann
 
 CXX_FLAGS = -std=c++17
 
