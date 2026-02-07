@@ -320,7 +320,7 @@ ec_pdo_entry_info_t slave_4_pdo_entries[] = {
     {0x6061, 0x00, 8},
     {0x0000, 0x00, 8}, /* Gap */
     {0x3154, 0x00, 16},
-    {0x2001, 0x00, 16},
+    {0x0000, 0x00, 16}, /* Gap */
     {0x6164, 0x00, 32},
     {0x0000, 0x00, 32}, /* Gap */
     {0x0000, 0x00, 32}, /* Gap */
@@ -332,7 +332,7 @@ ec_pdo_entry_info_t slave_4_pdo_entries[] = {
     {0x6861, 0x00, 8},
     {0x0000, 0x00, 8}, /* Gap */
     {0x3954, 0x00, 16},
-    {0x2801, 0x00, 16},
+    {0x0000, 0x00, 16}, /* Gap */
     {0x6964, 0x00, 32},
     {0x0000, 0x00, 32}, /* Gap */
     {0x0000, 0x00, 32}, /* Gap */
@@ -348,7 +348,7 @@ ec_pdo_info_t slave_4_pdos[] = {
 ec_sync_info_t slave_4_syncs[] = {
     {0, EC_DIR_OUTPUT, 0, NULL, EC_WD_DISABLE},
     {1, EC_DIR_INPUT, 0, NULL, EC_WD_DISABLE},
-    {2, EC_DIR_OUTPUT, 2, slave_4_pdos + 0, EC_WD_DISABLE},
+    {2, EC_DIR_OUTPUT, 2, slave_4_pdos + 0, EC_WD_ENABLE},
     {3, EC_DIR_INPUT, 2, slave_4_pdos + 2, EC_WD_DISABLE},
     {0xff}
 };
@@ -390,7 +390,7 @@ ec_pdo_entry_info_t slave_5_pdo_entries[] = {
     {0x6061, 0x00, 8},
     {0x0000, 0x00, 8}, /* Gap */
     {0x3154, 0x00, 16},
-    {0x2001, 0x00, 16},
+    {0x0000, 0x00, 16}, /* Gap */
     {0x6164, 0x00, 32},
     {0x0000, 0x00, 32}, /* Gap */
     {0x0000, 0x00, 32}, /* Gap */
@@ -402,7 +402,7 @@ ec_pdo_entry_info_t slave_5_pdo_entries[] = {
     {0x6861, 0x00, 8},
     {0x0000, 0x00, 8}, /* Gap */
     {0x3954, 0x00, 16},
-    {0x2801, 0x00, 16},
+    {0x0000, 0x00, 16}, /* Gap */
     {0x6964, 0x00, 32},
     {0x0000, 0x00, 32}, /* Gap */
     {0x0000, 0x00, 32}, /* Gap */
@@ -418,7 +418,7 @@ ec_pdo_info_t slave_5_pdos[] = {
 ec_sync_info_t slave_5_syncs[] = {
     {0, EC_DIR_OUTPUT, 0, NULL, EC_WD_DISABLE},
     {1, EC_DIR_INPUT, 0, NULL, EC_WD_DISABLE},
-    {2, EC_DIR_OUTPUT, 2, slave_5_pdos + 0, EC_WD_DISABLE},
+    {2, EC_DIR_OUTPUT, 2, slave_5_pdos + 0, EC_WD_ENABLE},
     {3, EC_DIR_INPUT, 2, slave_5_pdos + 2, EC_WD_DISABLE},
     {0xff}
 };
@@ -460,7 +460,7 @@ ec_pdo_entry_info_t slave_6_pdo_entries[] = {
     {0x6061, 0x00, 8},
     {0x0000, 0x00, 8}, /* Gap */
     {0x3154, 0x00, 16},
-    {0x2001, 0x00, 16},
+    {0x0000, 0x00, 16}, /* Gap */
     {0x6164, 0x00, 32},
     {0x0000, 0x00, 32}, /* Gap */
     {0x0000, 0x00, 32}, /* Gap */
@@ -472,7 +472,7 @@ ec_pdo_entry_info_t slave_6_pdo_entries[] = {
     {0x6861, 0x00, 8},
     {0x0000, 0x00, 8}, /* Gap */
     {0x3954, 0x00, 16},
-    {0x2801, 0x00, 16},
+    {0x0000, 0x00, 16}, /* Gap */
     {0x6964, 0x00, 32},
     {0x0000, 0x00, 32}, /* Gap */
     {0x0000, 0x00, 32}, /* Gap */
@@ -488,7 +488,7 @@ ec_pdo_info_t slave_6_pdos[] = {
 ec_sync_info_t slave_6_syncs[] = {
     {0, EC_DIR_OUTPUT, 0, NULL, EC_WD_DISABLE},
     {1, EC_DIR_INPUT, 0, NULL, EC_WD_DISABLE},
-    {2, EC_DIR_OUTPUT, 2, slave_6_pdos + 0, EC_WD_DISABLE},
+    {2, EC_DIR_OUTPUT, 2, slave_6_pdos + 0, EC_WD_ENABLE},
     {3, EC_DIR_INPUT, 2, slave_6_pdos + 2, EC_WD_DISABLE},
     {0xff}
 };

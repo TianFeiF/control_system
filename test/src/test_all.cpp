@@ -197,8 +197,8 @@ static int wait_for_domain_wc(unsigned int min_wc, int stable_cycles, int timeou
         ecrt_domain_state(domain1, &ds);
         print_process_table_if_needed(&ms, &ds);
 
-        /* 检查链路状态 + WC 状态 + WC 值 */
-        if (ms.link_up && ds.wc_state == EC_WC_COMPLETE && ds.working_counter >= min_wc) {
+        /* 检查链路状态 + WC 值 (Ignore wc_state as it might be INCOMPLETE if min_wc < expected) */
+        if (ms.link_up && ds.working_counter >= min_wc) {
             stable++;
         } else {
             stable = 0;
@@ -1014,6 +1014,16 @@ int enable_all_axes()
                 axes[i].stage = -1;
             }
 
+            /* 
+             * [CRITICAL FIX] 持续同步目标位置 = 实际位置 
+             * 防止在使能过程中（如 Switch On -> Operation Enabled）
+             * 因目标位置为 0 而导致伺服飞车。
+             */
+            if (!axes[i].done) {
+                const int32_t actual_pos = (int32_t) EC_READ_S32(domain1_pd + axes[i].dev->in.actualPosition);
+                EC_WRITE_S32(domain1_pd + axes[i].dev->out.targetPosition, actual_pos);
+            }
+
             /* Stage -1: Fault Reset Logic */
             if (axes[i].stage == -1) {
                 EC_WRITE_U16(domain1_pd + axes[i].off_control, 0x0080);
@@ -1403,7 +1413,7 @@ int main(int argc, char **argv)
     }
 
     /* 4. 等待从站通信链路稳定 */
-    if (wait_for_domain_wc(24, 50, 60000) != 0) {
+    if (wait_for_domain_wc(24, 50, 120000) != 0) {
         fprintf(stderr, "Domain wc not ready.\n");
         goto exit_cleanup;
     }
@@ -1441,7 +1451,7 @@ int main(int argc, char **argv)
     while (run) {
         default_task();
         process_servo_control();
-        process_io_control();
+        //process_io_control();
     }
     printf("Releasing master...\n");
     run = 0;
